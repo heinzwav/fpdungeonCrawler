@@ -207,7 +207,7 @@
             // pictureBox8
             // 
             pictureBox8.BackColor = SystemColors.ActiveCaptionText;
-            pictureBox8.BackgroundImage = Properties.Resources.Layer3_DoorRight;
+            pictureBox8.BackgroundImageLayout = ImageLayout.None;
             pictureBox8.Location = new Point(68, 172);
             pictureBox8.Name = "pictureBox8";
             pictureBox8.Size = new Size(25, 14);
