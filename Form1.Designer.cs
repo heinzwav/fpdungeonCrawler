@@ -48,8 +48,6 @@
             pictureBox15 = new PictureBox();
             pictureBox16 = new PictureBox();
             pictureBox17 = new PictureBox();
-            pictureBox18 = new PictureBox();
-            pictureBox19 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -70,8 +68,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox15).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox16).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox17).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox18).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox19).BeginInit();
             SuspendLayout();
             // 
             // pictureBox1
@@ -152,8 +148,6 @@
             tlpMinimap.Controls.Add(pictureBox15, 0, 3);
             tlpMinimap.Controls.Add(pictureBox16, 2, 4);
             tlpMinimap.Controls.Add(pictureBox17, 2, 3);
-            tlpMinimap.Controls.Add(pictureBox18, 1, 7);
-            tlpMinimap.Controls.Add(pictureBox19, 1, 8);
             tlpMinimap.Location = new Point(1044, 1113);
             tlpMinimap.Name = "tlpMinimap";
             tlpMinimap.RowCount = 10;
@@ -213,6 +207,7 @@
             // pictureBox8
             // 
             pictureBox8.BackColor = SystemColors.ActiveCaptionText;
+            pictureBox8.BackgroundImage = Properties.Resources.Layer3_DoorRight;
             pictureBox8.Location = new Point(68, 172);
             pictureBox8.Name = "pictureBox8";
             pictureBox8.Size = new Size(25, 14);
@@ -310,26 +305,6 @@
             pictureBox17.TabStop = false;
             pictureBox17.Tag = "Wall";
             // 
-            // pictureBox18
-            // 
-            pictureBox18.BackColor = SystemColors.ActiveCaptionText;
-            pictureBox18.Location = new Point(36, 151);
-            pictureBox18.Name = "pictureBox18";
-            pictureBox18.Size = new Size(25, 14);
-            pictureBox18.TabIndex = 33;
-            pictureBox18.TabStop = false;
-            pictureBox18.Tag = "Wall";
-            // 
-            // pictureBox19
-            // 
-            pictureBox19.BackColor = SystemColors.ActiveCaptionText;
-            pictureBox19.Location = new Point(36, 172);
-            pictureBox19.Name = "pictureBox19";
-            pictureBox19.Size = new Size(25, 14);
-            pictureBox19.TabIndex = 34;
-            pictureBox19.TabStop = false;
-            pictureBox19.Tag = "Wall";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -369,8 +344,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox15).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox16).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox17).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox18).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox19).EndInit();
             ResumeLayout(false);
         }
 
@@ -396,7 +369,5 @@
         private PictureBox pictureBox15;
         private PictureBox pictureBox16;
         private PictureBox pictureBox17;
-        private PictureBox pictureBox18;
-        private PictureBox pictureBox19;
     }
 }

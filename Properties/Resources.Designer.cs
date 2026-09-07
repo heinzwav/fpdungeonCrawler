@@ -93,9 +93,59 @@ namespace fpdungeonCrawler.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Layer2_DoorLeft {
+            get {
+                object obj = ResourceManager.GetObject("Layer2_DoorLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Layer2_DoorRight {
+            get {
+                object obj = ResourceManager.GetObject("Layer2_DoorRight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Layer2_DoorRightLeft {
+            get {
+                object obj = ResourceManager.GetObject("Layer2_DoorRightLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Layer3 {
             get {
                 object obj = ResourceManager.GetObject("Layer3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Layer3_DoorLeft {
+            get {
+                object obj = ResourceManager.GetObject("Layer3_DoorLeft", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Layer3_DoorRight {
+            get {
+                object obj = ResourceManager.GetObject("Layer3_DoorRight", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
