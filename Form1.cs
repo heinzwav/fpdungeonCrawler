@@ -7,6 +7,8 @@ namespace fpdungeonCrawler
 
         TableLayoutPanelCellPosition[] PlayerView;
         TableLayoutPanelCellPosition currentPlayerposition;
+
+        Player Map = new();
         bool[] Layer1 = new bool[3];
         bool[] Layer2 = new bool[3];
         bool[] Layer3 = new bool[3];
@@ -23,7 +25,6 @@ namespace fpdungeonCrawler
             this.KeyDown += Playermovements;
             
             
-
         }
 
 
