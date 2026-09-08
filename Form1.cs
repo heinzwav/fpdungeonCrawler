@@ -4,11 +4,13 @@ namespace fpdungeonCrawler
 {
     public partial class Form1 : Form
     {
+        //Player player = new();
 
         TableLayoutPanelCellPosition[] PlayerView;
         TableLayoutPanelCellPosition currentPlayerposition;
+        TableLayoutPanel panel = new();
 
-        Player Map = new();
+        Map map = new();
         bool[] Layer1 = new bool[3];
         bool[] Layer2 = new bool[3];
         bool[] Layer3 = new bool[3];
@@ -18,13 +20,19 @@ namespace fpdungeonCrawler
         public Form1()
         {
             InitializeComponent();
+
+            //pbPlayer = map.player.pbPlayer;
             PlayerView = new TableLayoutPanelCellPosition[9];
             GetPlayerView();
             DrawEnvironment();
-
+            this.Controls.Add(map.Minimap);
+            this.Controls.SetChildIndex(map.Minimap, 0);
+            map.GenerateMap();
+            map.InitializePlayer();
             this.KeyDown += Playermovements;
-            
-            
+
+
+
         }
 
 
@@ -94,7 +102,7 @@ namespace fpdungeonCrawler
             {
                 pbLayer1.BackgroundImage = Properties.Resources.Layer1_DoorRightPic;
             }
-            else if(Layer1[0] == true && Layer1[1] == false && Layer1[2] == true)
+            else if (Layer1[0] == true && Layer1[1] == false && Layer1[2] == true)
             {
                 pbLayer1.BackgroundImage = Properties.Resources.Layer1_HallPic;
             }
