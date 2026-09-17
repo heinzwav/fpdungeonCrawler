@@ -59,7 +59,7 @@ namespace fpdungeonCrawler
 
         }
 
-        private void GeneratePath(int col, int row, string tag)
+        public void GeneratePath(int col, int row, string tag)
         {
             Tile Empty = new Tile();
             Empty.TilePic.Size = new Size(15, 15);
@@ -70,6 +70,17 @@ namespace fpdungeonCrawler
             Minimap.Controls.Add(Empty.TilePic);
             Minimap.SetCellPosition(Empty.TilePic, new TableLayoutPanelCellPosition(col, row));
         }
+
+        public void GenerateEmptyTile(int col, int row)
+        {
+            Tile Empty = new Tile();
+            Empty.TilePic.Size = new Size(15, 15);
+            Empty.TilePic.BackColor = Color.AntiqueWhite;
+            Empty.TilePic.Tag = "Empty";
+            Minimap.Controls.Add(Empty.TilePic);
+            Minimap.SetCellPosition(Empty.TilePic, new TableLayoutPanelCellPosition(col, row));
+        }
+
         public void InitializePlayer()
         {
             player.pbPlayer.BackColor = SystemColors.ButtonHighlight;

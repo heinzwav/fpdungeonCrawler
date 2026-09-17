@@ -63,9 +63,9 @@ namespace fpdungeonCrawler.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Layer1 {
+        internal static System.Drawing.Bitmap Layer1_DoorLeftPic {
             get {
-                object obj = ResourceManager.GetObject("Layer1", resourceCulture);
+                object obj = ResourceManager.GetObject("Layer1_DoorLeftPic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace fpdungeonCrawler.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Layer1_DoorRight {
+        internal static System.Drawing.Bitmap Layer1_DoorRightaLeftPic {
             get {
-                object obj = ResourceManager.GetObject("Layer1_DoorRight", resourceCulture);
+                object obj = ResourceManager.GetObject("Layer1_DoorRightaLeftPic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -86,16 +86,6 @@ namespace fpdungeonCrawler.Properties {
         internal static System.Drawing.Bitmap Layer1_DoorRightPic {
             get {
                 object obj = ResourceManager.GetObject("Layer1_DoorRightPic", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Layer1_Hall {
-            get {
-                object obj = ResourceManager.GetObject("Layer1_Hall", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,9 +123,9 @@ namespace fpdungeonCrawler.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Layer2 {
+        internal static System.Drawing.Bitmap Layer2_DoorLeftPic {
             get {
-                object obj = ResourceManager.GetObject("Layer2", resourceCulture);
+                object obj = ResourceManager.GetObject("Layer2_DoorLeftPic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,29 +133,9 @@ namespace fpdungeonCrawler.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Layer2_DoorLeft {
+        internal static System.Drawing.Bitmap Layer2_DoorRightaLeftPic {
             get {
-                object obj = ResourceManager.GetObject("Layer2_DoorLeft", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Layer2_DoorRight {
-            get {
-                object obj = ResourceManager.GetObject("Layer2_DoorRight", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Layer2_DoorRightLeft {
-            get {
-                object obj = ResourceManager.GetObject("Layer2_DoorRightLeft", resourceCulture);
+                object obj = ResourceManager.GetObject("Layer2_DoorRightaLeftPic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,9 +173,9 @@ namespace fpdungeonCrawler.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Layer3 {
+        internal static System.Drawing.Bitmap Layer2_Wall2 {
             get {
-                object obj = ResourceManager.GetObject("Layer3", resourceCulture);
+                object obj = ResourceManager.GetObject("Layer2_Wall2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,9 +183,9 @@ namespace fpdungeonCrawler.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Layer3_DoorLeft {
+        internal static System.Drawing.Bitmap Layer3_DoorLeftaRightPic {
             get {
-                object obj = ResourceManager.GetObject("Layer3_DoorLeft", resourceCulture);
+                object obj = ResourceManager.GetObject("Layer3_DoorLeftaRightPic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -223,9 +193,9 @@ namespace fpdungeonCrawler.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Layer3_DoorRight {
+        internal static System.Drawing.Bitmap Layer3_DoorLeftPic {
             get {
-                object obj = ResourceManager.GetObject("Layer3_DoorRight", resourceCulture);
+                object obj = ResourceManager.GetObject("Layer3_DoorLeftPic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
