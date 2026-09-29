@@ -1,33 +1,24 @@
 using System.Diagnostics.Eventing.Reader;
 using System.Resources;
+using System.Timers;
 
 namespace fpdungeonCrawler
 {
     public partial class Form1 : Form
     {
-
-        //Tile[,] PlayerView;     //Resembles View Coordinates
-
-        TableLayoutPanel tlpMinimap = new();
-
         Map map = new();
         Player player = new Player();
-        //public enum PlayerOrientation { Left, Up, Right, Down }
-        //PlayerOrientation player.orientation = PlayerOrientation.Up;
 
 
         bool[] Layer1 = new bool[3];
         bool[] Layer2 = new bool[3];
         bool[] Layer3 = new bool[3];
-        //TableLayoutPanelCellPosition[] PlayerView = new TableLayoutPanelCellPosition[9];
-
 
 
 
         public Form1()
         {
             InitializeComponent();
-
 
 
             map.GenerateMap();
@@ -40,10 +31,8 @@ namespace fpdungeonCrawler
             this.Controls.SetChildIndex(map.minimap, 0);
             map.UpdateMinimapUI(player);
 
+
             this.KeyDown += Playermovements;
-
-
-
 
         }
 
@@ -155,7 +144,7 @@ namespace fpdungeonCrawler
                 {
                     for (int j = player.CurrentPosition.Column + 1; j >= player.CurrentPosition.Column - 1; j--)
                     {
-                        if (i < 0 || j < 0)
+                        if (i < 0 || j < 0 || i > 9 || j > 9)
                         {
                             k++;
                         }
@@ -336,14 +325,19 @@ namespace fpdungeonCrawler
         }
 
 
-
-        private void EnvironmentTest()
-        {
-            for (int i = 0; i < player.View.Length; i++)
-            {
-                Control control = tlpMinimap.GetControlFromPosition(player.View[i].TilePositionY, player.View[i].TilePositionX);
-                MessageBox.Show("Das hier ist" + control.Name);
-            }
-        }
+        
+        //public PictureBox OrkPicturebox(Form form)
+        //{
+        //    PictureBox PicBox = new();
+        //    PicBox.Size = new Size(600, 700);
+        //    PicBox.Location = new System.Drawing.Point(40, 40);
+        //    PicBox.BackColor = Color.Transparent;
+        //    PicBox.BorderStyle = BorderStyle.None;
+        //    PicBox.Image = Properties.Resources.OrkIdle1;
+        //    PicBox.SizeMode = PictureBoxSizeMode.StretchImage;
+        //    form.Controls.Add(PicBox);
+        //    PicBox.BringToFront();
+        //    return PicBox;
+        //}
     }
 }

@@ -5,6 +5,7 @@ using System.Formats.Asn1;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Timers;
 using static fpdungeonCrawler.Player;
 using static System.Net.WebRequestMethods;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
@@ -156,45 +157,6 @@ namespace fpdungeonCrawler
             tile.Type = Tile.TileType.Floor;
             mapTiles[col, row] = tile;
         }
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //public void GenerateEmptyTile(int col, int row)
-        //{
-        //    Tile Empty = new Tile();
-        //    Empty.PicBox.Size = new Size(15, 15);
-        //    Empty.PicBox.BackColor = Color.AntiqueWhite;
-        //    Empty.PicBox.Tag = "Empty";
-        //    //minimap.Controls.Add(Empty.PicBox);
-        //    //Minimap.SetCellPosition(Empty.PicBox, new TableLayoutPanelCellPosition(col, row));
-        //}
-
-        //public Player InitializePlayer()
-        //{
-        //    Player player = new Player();
-        //    player.pbPlayer.BackColor = SystemColors.ButtonHighlight;
-        //    player.pbPlayer.BackgroundImage = Properties.Resources.PlayerArrowNew;
-        //    player.pbPlayer.BackgroundImageLayout = ImageLayout.Stretch;
-        //    player.pbPlayer.Location = new Point(25, 120);
-        //    player.pbPlayer.Margin = new Padding(2);
-        //    player.pbPlayer.Name = "pbPlayer";
-        //    player.pbPlayer.Size = new Size(15, 15);
-        //    player.pbPlayer.TabIndex = 1;
-        //    player.pbPlayer.TabStop = false;
-        //    Control replacePic = Minimap.GetControlFromPosition(1, 8);
-        //    replacePic.Dispose();
-        //    Minimap.SetCellPosition(player.pbPlayer, new TableLayoutPanelCellPosition(1, 8));
-
-        //    return player;
-
-        //}
 
 
     }
