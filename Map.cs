@@ -4,105 +4,166 @@ using System.Drawing.Text;
 using System.Formats.Asn1;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using static System.Net.WebRequestMethods;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace fpdungeonCrawler
 {
     public class Map
     {
-        int[,] mapCoordinates = new int[10, 10];
-        public TableLayoutPanelCellPosition[] PlayerViewTiles = new TableLayoutPanelCellPosition[9];
-        public TableLayoutPanel Minimap { get; set; } = new();
-        public Player player = new();
+        int SizeX = 10;
+        int SizeY = 10;
 
+        public Tile[,] mapTiles = new Tile[10, 10];
+        public PictureBox[,] pictureboxes = new PictureBox[10, 10];
+        public TableLayoutPanel minimap = new();
+
+        TableLayoutPanelCellPosition[] PlayerViewTiles = new TableLayoutPanelCellPosition[9];
 
 
         public void GenerateMap()
         {
-            //Minimap
-            Minimap.AutoSize = true;
-            Minimap.ColumnCount = 10;
-            Minimap.RowCount = 10;
-            Minimap.Location = new System.Drawing.Point(25, 25);
-
-
-            for (int i = 0; i < mapCoordinates.GetLength(0); i++)
+            for (int i = 0; i < SizeX; i++)
             {
-                for (int j = 0; j < mapCoordinates.GetLength(1); j++)
+                for (int j = 0; j < SizeY; j++)
                 {
-                    Tile Wall = new Tile();
-                    Wall.TilePic.Size = new Size(15, 15);
-                    Wall.TilePic.BackColor = Color.Black;
-                    Wall.TilePic.Tag = "Wall";
-                    Minimap.Controls.Add(Wall.TilePic);
-                    Minimap.SetCellPosition(Wall.TilePic, new TableLayoutPanelCellPosition(i, j));
+                    Tile tile = new Tile();
+                    tile.TilePositionX = i;
+                    tile.TilePositionY = j;
+                    tile.Type = Tile.TileType.Wall;
+                    mapTiles[i, j] = tile;
+                }
+
+                GeneratePaths();
+            }
+        }
+
+        //Minimap  
+        public void GenerateMinimapUI()
+        {
+            minimap.AutoSize = true;
+            minimap.ColumnCount = 10;
+            minimap.RowCount = 10;
+            minimap.Location = new System.Drawing.Point(25, 25);
+            minimap.BackColor = Color.Black;
+            minimap.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
+            minimap.AutoSize = true;
+            minimap.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+
+            foreach (Tile tile in mapTiles)
+            {
+                PictureBox PicBox = new();
+                PicBox.Size = new Size(18, 18);
+                minimap.Controls.Add(PicBox);
+                minimap.SetCellPosition(PicBox, new TableLayoutPanelCellPosition(tile.TilePositionX, tile.TilePositionY));
+                PicBox.BackgroundImageLayout = ImageLayout.Stretch;
+                PicBox.Margin = new Padding(0);
+                pictureboxes[tile.TilePositionX, tile.TilePositionY] = PicBox;
+                //tile.Type = Tile.TileType.Wall;
+                
+                
+                switch (tile.Type)
+                    {
+                        case Tile.TileType.Wall:
+                            if (tile.entity == null) PicBox.BackgroundImage = Properties.Resources.WallTile;
+                            break;
+
+                        case Tile.TileType.Floor:
+                            PicBox.BackgroundImage = Properties.Resources.FloorTile;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
+        public void UpdateMinimapUI()
+        {
+            foreach (Tile tile in mapTiles)
+            {
+                PictureBox PicBox = pictureboxes[tile.TilePositionX, tile.TilePositionY];
 
-            //Emptys
+                if (tile.entity == null)
+                {
+                    switch (tile.Type)
+                    {
+                        case Tile.TileType.Wall:
+                            PicBox.BackgroundImage = Properties.Resources.WallTile;
+                            break;
 
+                        case Tile.TileType.Floor:
+                            PicBox.BackgroundImage = Properties.Resources.FloorTile;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    PicBox.BackgroundImage = Properties.Resources.PlayerArrowNew;
+                }
+
+            }
+        }
+
+
+        public void GeneratePaths()
+        {
             for (int i = 3; i < 9; i++)
             {
-                GeneratePath(1, i, "Empty");
+                GenerateFloor(1, i);
             }
 
             for (int i = 2; i < 8; i++)
             {
-                GeneratePath(i, 5, "Empty");
+                GenerateFloor(i, 5);
             }
             for (int i = 4; i < 9; i++)
             {
-                GeneratePath(6, i, "Empty");
+                GenerateFloor(6, i);
             }
-
-            //SetPlayerPosition
-
         }
 
-        public void GeneratePath(int col, int row, string tag)
+
+        public void GenerateFloor(int col, int row)
         {
-            Tile Empty = new Tile();
-            Empty.TilePic.Size = new Size(15, 15);
-            Empty.TilePic.BackColor = Color.AntiqueWhite;
-            Empty.TilePic.Tag = tag;
-            Control replacePic = Minimap.GetControlFromPosition(col, row);
-            replacePic.Dispose();
-            Minimap.Controls.Add(Empty.TilePic);
-            Minimap.SetCellPosition(Empty.TilePic, new TableLayoutPanelCellPosition(col, row));
+            Tile tile = new Tile();
+            tile.TilePositionX = col;
+            tile.TilePositionY = row;
+            tile.Type = Tile.TileType.Floor;
+            mapTiles[col, row] = tile;
         }
 
         public void GenerateEmptyTile(int col, int row)
         {
             Tile Empty = new Tile();
-            Empty.TilePic.Size = new Size(15, 15);
-            Empty.TilePic.BackColor = Color.AntiqueWhite;
-            Empty.TilePic.Tag = "Empty";
-            Minimap.Controls.Add(Empty.TilePic);
-            Minimap.SetCellPosition(Empty.TilePic, new TableLayoutPanelCellPosition(col, row));
+            Empty.PicBox.Size = new Size(15, 15);
+            Empty.PicBox.BackColor = Color.AntiqueWhite;
+            Empty.PicBox.Tag = "Empty";
+            //minimap.Controls.Add(Empty.PicBox);
+            //Minimap.SetCellPosition(Empty.PicBox, new TableLayoutPanelCellPosition(col, row));
         }
 
-        public void InitializePlayer()
-        {
-            player.pbPlayer.BackColor = SystemColors.ButtonHighlight;
-            player.pbPlayer.BackgroundImage = Properties.Resources.PlayerArrow;
-            player.pbPlayer.BackgroundImageLayout = ImageLayout.Stretch;
-            player.pbPlayer.Location = new Point(25, 120);
-            player.pbPlayer.Margin = new Padding(2);
-            player.pbPlayer.Name = "pbPlayer";
-            player.pbPlayer.Size = new Size(15, 15);
-            player.pbPlayer.TabIndex = 1;
-            player.pbPlayer.TabStop = false;
-            Minimap.Controls.Add(player.pbPlayer);
-            Control replacePic = Minimap.GetControlFromPosition(1, 8);
-            replacePic.Dispose();
-            Minimap.SetCellPosition(player.pbPlayer, new TableLayoutPanelCellPosition(1, 8));
+        //public Player InitializePlayer()
+        //{
+        //    Player player = new Player();
+        //    player.pbPlayer.BackColor = SystemColors.ButtonHighlight;
+        //    player.pbPlayer.BackgroundImage = Properties.Resources.PlayerArrowNew;
+        //    player.pbPlayer.BackgroundImageLayout = ImageLayout.Stretch;
+        //    player.pbPlayer.Location = new Point(25, 120);
+        //    player.pbPlayer.Margin = new Padding(2);
+        //    player.pbPlayer.Name = "pbPlayer";
+        //    player.pbPlayer.Size = new Size(15, 15);
+        //    player.pbPlayer.TabIndex = 1;
+        //    player.pbPlayer.TabStop = false;
+        //    Control replacePic = Minimap.GetControlFromPosition(1, 8);
+        //    replacePic.Dispose();
+        //    Minimap.SetCellPosition(player.pbPlayer, new TableLayoutPanelCellPosition(1, 8));
 
-        }
-    }
+        //    return player;
 
-    public class Tile
-    {
-        public enum Type : int { Wall = 1, Empty = 0 }
-        public PictureBox TilePic = new();
+        //}
+
+
     }
 }

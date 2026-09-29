@@ -5,16 +5,15 @@ namespace fpdungeonCrawler
 {
     public partial class Form1 : Form
     {
-        PictureBox pbPlayer = new();
 
         TableLayoutPanelCellPosition[] PlayerView;
-        TableLayoutPanelCellPosition currentPlayerposition;
+
         TableLayoutPanel tlpMinimap = new();
 
         Map map = new();
         Player player = new Player();
-        public enum PlayerOrientation { Left, Up, Right, Down }
-        PlayerOrientation pOrientation = PlayerOrientation.Up;
+        //public enum PlayerOrientation { Left, Up, Right, Down }
+        //PlayerOrientation player.orientation = PlayerOrientation.Up;
 
 
         bool[] Layer1 = new bool[3];
@@ -28,17 +27,17 @@ namespace fpdungeonCrawler
         {
             InitializeComponent();
 
-            player = map.player;
-            tlpMinimap = map.Minimap;
-            pbPlayer = map.player.pbPlayer;
 
             PlayerView = new TableLayoutPanelCellPosition[9];
             map.GenerateMap();
-            map.InitializePlayer();
+            player = GeneratePlayer();
+            map.GenerateMinimapUI();
+
             GetPlayerView();
-            DrawEnvironment();
-            this.Controls.Add(map.Minimap);
-            this.Controls.SetChildIndex(map.Minimap, 0);
+
+            this.Controls.Add(map.minimap);
+            this.Controls.SetChildIndex(map.minimap, 0);
+            map.UpdateMinimapUI();
 
             this.KeyDown += Playermovements;
 
@@ -47,84 +46,103 @@ namespace fpdungeonCrawler
 
         }
 
+        public Player GeneratePlayer()
+        {
+            Player player = new Player();
+            Tile tile = new Tile();
+            tile.TilePositionX = player.StartPosition.Column;
+            tile.TilePositionY = player.StartPosition.Row;
+            tile.entity = player;
+            map.mapTiles[player.StartPosition.Column, player.StartPosition.Row] = tile;
+            return player;
+        }
+
+        public void UpdatePlayerposition()
+        {
+            foreach (Tile tile in map.mapTiles)
+            {
+                if (tile.entity == player)
+                {
+                    tile.entity = null;
+                }
+                map.mapTiles[player.CurrentPosition.Column, player.CurrentPosition.Row].entity = player;
+            }
+        }
+
 
         private void Playermovements(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            currentPlayerposition = tlpMinimap.GetCellPosition(pbPlayer);
-
             if (e.KeyCode == Keys.W)
             {
-                pOrientation = PlayerOrientation.Up;
-                TableLayoutPanelCellPosition newPos = new TableLayoutPanelCellPosition(currentPlayerposition.Column, currentPlayerposition.Row - 1);
-                Control nextControl = tlpMinimap.GetControlFromPosition(newPos.Column, newPos.Row);
-                nextControl.Dispose();
-                tlpMinimap.SetCellPosition(pbPlayer, newPos);
-                map.GenerateEmptyTile(currentPlayerposition.Column, currentPlayerposition.Row);
+                switch (player.orientation)
+                {
+                    case Player.PlayerOrientation.Up:
+                        player.CurrentPosition = (player.CurrentPosition.Column, player.CurrentPosition.Row - 1);
+                        break;
+
+                    case Player.PlayerOrientation.Down:
+                        player.CurrentPosition = (player.CurrentPosition.Column, player.CurrentPosition.Row + 1);
+                        break;
+                }
             }
 
 
             if (e.KeyCode == Keys.S)
             {
-                //pOrientation = PlayerOrientation.Down;
-                TableLayoutPanelCellPosition newPos = new TableLayoutPanelCellPosition(currentPlayerposition.Column, currentPlayerposition.Row + 1);
-                Control nextControl = tlpMinimap.GetControlFromPosition(newPos.Column, newPos.Row);
-                nextControl.Dispose();
-                tlpMinimap.SetCellPosition(pbPlayer, newPos);
-                map.GenerateEmptyTile(currentPlayerposition.Column, currentPlayerposition.Row);
+                player.CurrentPosition = (player.CurrentPosition.Column, player.CurrentPosition.Row + 1);
             }
 
             if (e.KeyCode == Keys.D)
             {
-                if ((int)pOrientation < 3)
+                if ((int)player.orientation < 3)
                 {
-                    pOrientation++;
+                    player.orientation++;
                 }
                 else
                 {
-                    pOrientation = PlayerOrientation.Left;
+                    player.orientation = Player.PlayerOrientation.Left;
                 }
             }
 
 
             if (e.KeyCode == Keys.A)
             {
-                if ((int)pOrientation > 0)
+                if ((int)player.orientation > 0)
                 {
-                    pOrientation--;
+                    player.orientation--;
                 }
                 else
                 {
-                    pOrientation = PlayerOrientation.Down;
+                    player.orientation = Player.PlayerOrientation.Down;
                 }
             }
-
-            DrawEnvironment();
+            UpdatePlayerposition();
+            map.UpdateMinimapUI();
+            //DrawEnvironment();
         }
 
 
         private void GetPlayerView()
         {
-            if (pOrientation == PlayerOrientation.Up)
+            if (player.orientation == Player.PlayerOrientation.Up)
             {
-                currentPlayerposition = tlpMinimap.GetCellPosition(pbPlayer);
                 int k = 0;
-                for (int i = currentPlayerposition.Row - 2; i <= currentPlayerposition.Row; i++)
+                for (int i = player.CurrentPosition.Row - 2; i <= player.CurrentPosition.Row; i++)
                 {
-                    for (int j = currentPlayerposition.Column - 1; j <= currentPlayerposition.Column + 1; j++)
+                    for (int j = player.CurrentPosition.Column - 1; j <= player.CurrentPosition.Column + 1; j++)
                     {
-                        PlayerView[k] = new TableLayoutPanelCellPosition(j, i);
+                        player.View[k] = map.mapTiles[j, i];
                         k += 1;
                     }
                 }
             }
 
-            else if (pOrientation == PlayerOrientation.Down)
+            else if (player.orientation == Player.PlayerOrientation.Down)
             {
-                currentPlayerposition = tlpMinimap.GetCellPosition(pbPlayer);
                 int k = 0;
-                for (int i = currentPlayerposition.Row + 2; i >= currentPlayerposition.Row; i--)
+                for (int i = player.CurrentPosition.Row + 2; i >= player.CurrentPosition.Row; i--)
                 {
-                    for (int j = currentPlayerposition.Column + 1; j >= currentPlayerposition.Column - 1; j--)
+                    for (int j = player.CurrentPosition.Column + 1; j >= player.CurrentPosition.Column - 1; j--)
                     {
                         PlayerView[k] = new TableLayoutPanelCellPosition(i, j);
                         k += 1;
@@ -132,13 +150,12 @@ namespace fpdungeonCrawler
                 }
             }
 
-            else if (pOrientation == PlayerOrientation.Left)
+            else if (player.orientation == Player.PlayerOrientation.Left)
             {
-                currentPlayerposition = tlpMinimap.GetCellPosition(pbPlayer);
                 int k = 0;
-                for (int i = currentPlayerposition.Column - 2; i <= currentPlayerposition.Column; i++)
+                for (int i = player.CurrentPosition.Column - 2; i <= player.CurrentPosition.Column; i++)
                 {
-                    for (int j = currentPlayerposition.Row +1; j >= currentPlayerposition.Row -1; j--)
+                    for (int j = player.CurrentPosition.Row +1; j >= player.CurrentPosition.Row -1; j--)
                     {
                         PlayerView[k] = new TableLayoutPanelCellPosition(i, j);
                         k += 1;
@@ -148,13 +165,12 @@ namespace fpdungeonCrawler
             }
 
 
-            else if (pOrientation == PlayerOrientation.Right)
+            else if (player.orientation == Player.PlayerOrientation.Right)
             {
-                currentPlayerposition = tlpMinimap.GetCellPosition(pbPlayer);
                 int k = 0;
-                for (int i = currentPlayerposition.Column + 2; i >= currentPlayerposition.Column; i--)
+                for (int i = player.CurrentPosition.Column + 2; i >= player.CurrentPosition.Column; i--)
                 {
-                    for (int j = currentPlayerposition.Row - 1; j <= currentPlayerposition.Row + 1; j++)
+                    for (int j = player.CurrentPosition.Row - 1; j <= player.CurrentPosition.Row + 1; j++)
                     {
                         PlayerView[k] = new TableLayoutPanelCellPosition(i, j);
                         k += 1;
