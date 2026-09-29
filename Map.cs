@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing.Text;
 using System.Formats.Asn1;
+using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using static fpdungeonCrawler.Player;
 using static System.Net.WebRequestMethods;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
@@ -32,10 +34,9 @@ namespace fpdungeonCrawler
                     tile.TilePositionY = j;
                     tile.Type = Tile.TileType.Wall;
                     mapTiles[i, j] = tile;
-                }
-
-                GeneratePaths();
+                }                
             }
+            GeneratePaths();
         }
 
         //Minimap  
@@ -59,7 +60,6 @@ namespace fpdungeonCrawler
                 PicBox.BackgroundImageLayout = ImageLayout.Stretch;
                 PicBox.Margin = new Padding(0);
                 pictureboxes[tile.TilePositionX, tile.TilePositionY] = PicBox;
-                //tile.Type = Tile.TileType.Wall;
                 
                 
                 switch (tile.Type)
@@ -77,7 +77,7 @@ namespace fpdungeonCrawler
                 }
             }
 
-        public void UpdateMinimapUI()
+        public void UpdateMinimapUI(Player player)
         {
             foreach (Tile tile in mapTiles)
             {
@@ -100,10 +100,33 @@ namespace fpdungeonCrawler
                 }
                 else
                 {
-                    PicBox.BackgroundImage = Properties.Resources.PlayerArrowNew;
+                    PicBox.BackgroundImage = ChangePlayerArrowDirection(player);
                 }
-
             }
+        }
+
+        public Image ChangePlayerArrowDirection(Player player)
+        {
+            Image bmPlayerArrow = Properties.Resources.PlayerArrowNew;
+
+            switch (player.orientation)
+            {
+                case PlayerOrientation.Up:
+                    break;
+
+                case PlayerOrientation.Down:
+                    bmPlayerArrow.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                    break;
+
+                case PlayerOrientation.Left:
+                    bmPlayerArrow.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                    break;
+
+                case PlayerOrientation.Right:
+                    bmPlayerArrow.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                    break;
+            }
+            return bmPlayerArrow;
         }
 
 
@@ -134,15 +157,24 @@ namespace fpdungeonCrawler
             mapTiles[col, row] = tile;
         }
 
-        public void GenerateEmptyTile(int col, int row)
-        {
-            Tile Empty = new Tile();
-            Empty.PicBox.Size = new Size(15, 15);
-            Empty.PicBox.BackColor = Color.AntiqueWhite;
-            Empty.PicBox.Tag = "Empty";
-            //minimap.Controls.Add(Empty.PicBox);
-            //Minimap.SetCellPosition(Empty.PicBox, new TableLayoutPanelCellPosition(col, row));
-        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //public void GenerateEmptyTile(int col, int row)
+        //{
+        //    Tile Empty = new Tile();
+        //    Empty.PicBox.Size = new Size(15, 15);
+        //    Empty.PicBox.BackColor = Color.AntiqueWhite;
+        //    Empty.PicBox.Tag = "Empty";
+        //    //minimap.Controls.Add(Empty.PicBox);
+        //    //Minimap.SetCellPosition(Empty.PicBox, new TableLayoutPanelCellPosition(col, row));
+        //}
 
         //public Player InitializePlayer()
         //{

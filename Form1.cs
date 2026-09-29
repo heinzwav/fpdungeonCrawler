@@ -6,7 +6,7 @@ namespace fpdungeonCrawler
     public partial class Form1 : Form
     {
 
-        TableLayoutPanelCellPosition[] PlayerView;
+        //Tile[,] PlayerView;     //Resembles View Coordinates
 
         TableLayoutPanel tlpMinimap = new();
 
@@ -19,6 +19,7 @@ namespace fpdungeonCrawler
         bool[] Layer1 = new bool[3];
         bool[] Layer2 = new bool[3];
         bool[] Layer3 = new bool[3];
+        //TableLayoutPanelCellPosition[] PlayerView = new TableLayoutPanelCellPosition[9];
 
 
 
@@ -28,7 +29,7 @@ namespace fpdungeonCrawler
             InitializeComponent();
 
 
-            PlayerView = new TableLayoutPanelCellPosition[9];
+
             map.GenerateMap();
             player = GeneratePlayer();
             map.GenerateMinimapUI();
@@ -37,7 +38,7 @@ namespace fpdungeonCrawler
 
             this.Controls.Add(map.minimap);
             this.Controls.SetChildIndex(map.minimap, 0);
-            map.UpdateMinimapUI();
+            map.UpdateMinimapUI(player);
 
             this.KeyDown += Playermovements;
 
@@ -54,6 +55,7 @@ namespace fpdungeonCrawler
             tile.TilePositionY = player.StartPosition.Row;
             tile.entity = player;
             map.mapTiles[player.StartPosition.Column, player.StartPosition.Row] = tile;
+            player.orientation = Player.PlayerOrientation.Up;
             return player;
         }
 
@@ -74,22 +76,24 @@ namespace fpdungeonCrawler
         {
             if (e.KeyCode == Keys.W)
             {
-                switch (player.orientation)
+                player.PositionInFront = player.GetPositionInFront(player);
+                if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].Type == Tile.TileType.Wall)
                 {
-                    case Player.PlayerOrientation.Up:
-                        player.CurrentPosition = (player.CurrentPosition.Column, player.CurrentPosition.Row - 1);
-                        break;
-
-                    case Player.PlayerOrientation.Down:
-                        player.CurrentPosition = (player.CurrentPosition.Column, player.CurrentPosition.Row + 1);
-                        break;
+                    return;
                 }
+                player.CurrentPosition = (player.PositionInFront);
             }
 
 
             if (e.KeyCode == Keys.S)
             {
-                player.CurrentPosition = (player.CurrentPosition.Column, player.CurrentPosition.Row + 1);
+                player.PositionBehind = player.GetPositionBehind(player);
+                if (map.mapTiles[player.PositionBehind.Column, player.PositionBehind.Row].Type == Tile.TileType.Wall)
+                {
+                    return;
+                }
+
+                player.CurrentPosition = (player.PositionBehind);
             }
 
             if (e.KeyCode == Keys.D)
@@ -117,8 +121,8 @@ namespace fpdungeonCrawler
                 }
             }
             UpdatePlayerposition();
-            map.UpdateMinimapUI();
-            //DrawEnvironment();
+            map.UpdateMinimapUI(player);
+            DrawEnvironment();
         }
 
 
@@ -131,8 +135,15 @@ namespace fpdungeonCrawler
                 {
                     for (int j = player.CurrentPosition.Column - 1; j <= player.CurrentPosition.Column + 1; j++)
                     {
-                        player.View[k] = map.mapTiles[j, i];
-                        k += 1;
+                        if (i < 0 || j < 0)
+                        {
+                            k++;
+                        }
+                        else
+                        {
+                            player.View[k] = map.mapTiles[j, i];
+                            k++;
+                        }
                     }
                 }
             }
@@ -144,8 +155,15 @@ namespace fpdungeonCrawler
                 {
                     for (int j = player.CurrentPosition.Column + 1; j >= player.CurrentPosition.Column - 1; j--)
                     {
-                        PlayerView[k] = new TableLayoutPanelCellPosition(i, j);
-                        k += 1;
+                        if (i < 0 || j < 0)
+                        {
+                            k++;
+                        }
+                        else
+                        {
+                            player.View[k] = map.mapTiles[j, i];
+                            k++;
+                        }
                     }
                 }
             }
@@ -155,12 +173,18 @@ namespace fpdungeonCrawler
                 int k = 0;
                 for (int i = player.CurrentPosition.Column - 2; i <= player.CurrentPosition.Column; i++)
                 {
-                    for (int j = player.CurrentPosition.Row +1; j >= player.CurrentPosition.Row -1; j--)
+                    for (int j = player.CurrentPosition.Row + 1; j >= player.CurrentPosition.Row - 1; j--)
                     {
-                        PlayerView[k] = new TableLayoutPanelCellPosition(i, j);
-                        k += 1;
+                        if (i < 0 || j < 0)
+                        {
+                            k++;
+                        }
+                        else
+                        {
+                            player.View[k] = map.mapTiles[i, j];
+                            k++;
+                        }
                     }
-
                 }
             }
 
@@ -172,8 +196,15 @@ namespace fpdungeonCrawler
                 {
                     for (int j = player.CurrentPosition.Row - 1; j <= player.CurrentPosition.Row + 1; j++)
                     {
-                        PlayerView[k] = new TableLayoutPanelCellPosition(i, j);
-                        k += 1;
+                        if (i < 0 || j < 0)
+                        {
+                            k++;
+                        }
+                        else
+                        {
+                            player.View[k] = map.mapTiles[i, j];
+                            k++;
+                        }
                     }
 
                 }
@@ -186,14 +217,14 @@ namespace fpdungeonCrawler
             GetPlayerView();
             for (int i = 0; i < 3; i++)
             {
-                if (PlayerView[i].Column < 0 || PlayerView[i].Row < 0)
+                if (player.View[i].TilePositionX < 0 || player.View[i].TilePositionY < 0)
                 {
                     Layer1[i] = true;
                 }
                 else
                 {
-                    Control control = tlpMinimap.GetControlFromPosition(PlayerView[i].Column, PlayerView[i].Row);
-                    if (control.Tag == "Wall")
+                    Tile tile = player.View[i];
+                    if (tile.Type == Tile.TileType.Wall)
                     {
                         Layer1[i] = true;
                     }
@@ -202,8 +233,8 @@ namespace fpdungeonCrawler
                         Layer1[i] = false;
                     }
                 }
-
             }
+
             if (Layer1[0] == true && Layer1[1] == false && Layer1[2] == false)
             {
                 pbLayer1.BackgroundImage = Properties.Resources.Layer1_DoorRightPic;
@@ -231,8 +262,8 @@ namespace fpdungeonCrawler
             GetPlayerView();
             for (int i = 3; i < 6; i++)
             {
-                Control control = tlpMinimap.GetControlFromPosition(PlayerView[i].Column, PlayerView[i].Row);
-                if (control.Tag == "Wall")
+                Tile tile = player.View[i];
+                if (tile.Type == Tile.TileType.Wall)
                 {
                     Layer2[i - 3] = true;
                 }
@@ -268,8 +299,8 @@ namespace fpdungeonCrawler
             GetPlayerView();
             for (int i = 6; i < 9; i++)
             {
-                Control control = tlpMinimap.GetControlFromPosition(PlayerView[i].Column, PlayerView[i].Row);
-                if (control.Tag == "Wall")
+                Tile tile = player.View[i];
+                if (tile.Type == Tile.TileType.Wall)
                 {
                     Layer3[i - 6] = true;
                 }
@@ -308,9 +339,9 @@ namespace fpdungeonCrawler
 
         private void EnvironmentTest()
         {
-            for (int i = 0; i < PlayerView.Length; i++)
+            for (int i = 0; i < player.View.Length; i++)
             {
-                Control control = tlpMinimap.GetControlFromPosition(PlayerView[i].Row, PlayerView[i].Column);
+                Control control = tlpMinimap.GetControlFromPosition(player.View[i].TilePositionY, player.View[i].TilePositionX);
                 MessageBox.Show("Das hier ist" + control.Name);
             }
         }
