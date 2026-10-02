@@ -21,24 +21,24 @@ namespace fpdungeonCrawler
         public Tile[] View = new Tile[9];
 
 
-        public (int Column, int Row) GetPositionInFront(Player player)
+        public (int Column, int Row) GetPositionInFront(Player player, int distance)
         {
             switch (player.orientation)
             {
                 case PlayerOrientation.Up:
-                    player.PositionBehind = (CurrentPosition.Column, CurrentPosition.Row - 1);
+                    player.PositionBehind = (CurrentPosition.Column, CurrentPosition.Row - distance);
                     break;
 
                 case PlayerOrientation.Down:
-                    player.PositionBehind = (CurrentPosition.Column, CurrentPosition.Row + 1);
+                    player.PositionBehind = (CurrentPosition.Column, CurrentPosition.Row + distance);
                     break;
 
                 case PlayerOrientation.Left:
-                    player.PositionBehind = (CurrentPosition.Column - 1, CurrentPosition.Row);
+                    player.PositionBehind = (CurrentPosition.Column - distance, CurrentPosition.Row);
                     break;
 
                 case PlayerOrientation.Right:
-                    player.PositionBehind = (CurrentPosition.Column + 1, CurrentPosition.Row);
+                    player.PositionBehind = (CurrentPosition.Column + distance, CurrentPosition.Row);
                     break;
             }
             return player.PositionBehind;

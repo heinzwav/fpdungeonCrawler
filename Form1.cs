@@ -10,10 +10,39 @@ namespace fpdungeonCrawler
         Player player = new Player();
 
 
-        bool[] Layer1 = new bool[3];
-        bool[] Layer2 = new bool[3];
-        bool[] Layer3 = new bool[3];
+        Tile[] Layer1 = new Tile[3];
+        Tile[] Layer2 = new Tile[3];
+        Tile[] Layer3 = new Tile[3];
 
+        public Rectangle recLayer1 = new Rectangle
+        {
+            Size = new Size(224, 234),
+            Location = new Point(288, 268)
+        };
+
+        public Rectangle recLayer2 = new Rectangle
+        {
+            Size = new Size(408, 406),
+            Location = new Point(190, 150)
+        };
+
+        public Rectangle recLayer3 = new Rectangle
+        {
+            Size = new Size(820, 690),
+            Location = new Point(0, 0)
+        };
+
+        public Rectangle recEntity = new Rectangle
+        {
+            Size = new Size(408, 406),
+            Location = new Point(190, 150)
+        };
+
+        public bool EntityinSight;
+        public Image imgEntity = Properties.Resources.OrkIdle1;
+        public Image imgLayer1 = Properties.Resources.Layer1_Straight;
+        public Image imgLayer2 = Properties.Resources.Layer2_Straight;
+        public Image imgLayer3 = Properties.Resources.Layer3_Straight;
 
 
         public Form1()
@@ -25,8 +54,11 @@ namespace fpdungeonCrawler
             player = GeneratePlayer();
             map.GenerateMinimapUI();
 
+            CreateOrc();
+
             GetPlayerView();
 
+            this.Paint += Form1_Paint;
             this.Controls.Add(map.minimap);
             this.Controls.SetChildIndex(map.minimap, 0);
             map.UpdateMinimapUI(player);
@@ -34,6 +66,14 @@ namespace fpdungeonCrawler
 
             this.KeyDown += Playermovements;
 
+            this.pbLayer1.Visible = false;
+            this.pbLayer2.Visible = false;
+            this.pbLayer3.Visible = false;
+
+            DrawEnvironment();
+
+
+            this.Invalidate();
         }
 
         public Player GeneratePlayer()
@@ -65,7 +105,7 @@ namespace fpdungeonCrawler
         {
             if (e.KeyCode == Keys.W)
             {
-                player.PositionInFront = player.GetPositionInFront(player);
+                player.PositionInFront = player.GetPositionInFront(player, 1);
                 if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].Type == Tile.TileType.Wall)
                 {
                     return;
@@ -112,6 +152,7 @@ namespace fpdungeonCrawler
             UpdatePlayerposition();
             map.UpdateMinimapUI(player);
             DrawEnvironment();
+            this.Invalidate();
         }
 
 
@@ -208,41 +249,51 @@ namespace fpdungeonCrawler
             {
                 if (player.View[i].TilePositionX < 0 || player.View[i].TilePositionY < 0)
                 {
-                    Layer1[i] = true;
+                    Layer1[i].isWall = true;
                 }
                 else
                 {
-                    Tile tile = player.View[i];
-                    if (tile.Type == Tile.TileType.Wall)
+                    Layer1[i] = player.View[i];
+                    if (Layer1[i].Type == Tile.TileType.Wall)
                     {
-                        Layer1[i] = true;
+                        Layer1[i].isWall = true;
                     }
                     else
                     {
-                        Layer1[i] = false;
+                        Layer1[i].isWall = false;
                     }
                 }
             }
 
-            if (Layer1[0] == true && Layer1[1] == false && Layer1[2] == false)
+            if (Layer1[0].isWall == true && Layer1[1].isWall == false && Layer1[2].isWall == false)
             {
-                pbLayer1.BackgroundImage = Properties.Resources.Layer1_DoorRightPic;
+                imgLayer1 = Properties.Resources.Layer1_R;
             }
-            else if (Layer1[0] == true && Layer1[1] == false && Layer1[2] == true)
+            else if (Layer1[0].isWall == true && Layer1[1].isWall == false && Layer1[2].isWall == true)
             {
-                pbLayer1.BackgroundImage = Properties.Resources.Layer1_HallPic;
+                imgLayer1 = Properties.Resources.Layer1_Straight;
             }
-            else if (Layer1[0] == false && Layer1[1] == false && Layer1[2] == true)
+            else if (Layer1[0].isWall == false && Layer1[1].isWall == false && Layer1[2].isWall == true)
             {
-                pbLayer1.BackgroundImage = Properties.Resources.Layer1_DoorLeftPic;
+                imgLayer1 = Properties.Resources.Layer1_L;
             }
-            else if (Layer1[0] == false && Layer1[1] == false && Layer1[2] == false)
+            else if (Layer1[0].isWall == false && Layer1[1].isWall == false && Layer1[2].isWall == false)
             {
-                pbLayer1.BackgroundImage = Properties.Resources.Layer1_DoorRightaLeftPic;
+                imgLayer1 = Properties.Resources.Layer1_T;
             }
-            else if (Layer1[1] == true)
+            else if (Layer1[1].isWall == true)
             {
-                pbLayer1.BackgroundImage = Properties.Resources.Layer1_WallPic1;
+                imgLayer1 = Properties.Resources.Layer1_Wall;
+            }
+
+            if (Layer1[1].entity is null)
+            {
+                EntityinSight = false;
+            }
+            else
+            {
+                EntityinSight = true;
+                SetRecEntitySize(2);
             }
         }
 
@@ -251,35 +302,57 @@ namespace fpdungeonCrawler
             GetPlayerView();
             for (int i = 3; i < 6; i++)
             {
-                Tile tile = player.View[i];
-                if (tile.Type == Tile.TileType.Wall)
+                int j = i - 3;
+
+                Layer2[j] = player.View[i];
+                if (Layer2[j].Type == Tile.TileType.Wall)
                 {
-                    Layer2[i - 3] = true;
+                    Layer2[j].isWall = true;
                 }
                 else
                 {
-                    Layer2[i - 3] = false;
+                    Layer2[j].isWall = false;
                 }
             }
-            if (Layer2[0] == true && Layer2[1] == false && Layer2[2] == false)
+            if (Layer2[0].isWall == true && Layer2[1].isWall == false && Layer2[2].isWall == false)
             {
-                pbLayer2.BackgroundImage = Properties.Resources.Layer2_DoorRightPic;
+                imgLayer2 = Properties.Resources.Layer2_R;
             }
-            else if (Layer2[0] == true && Layer2[1] == false && Layer2[2] == true)
+            else if (Layer2[0].isWall == true && Layer2[1].isWall == false && Layer2[2].isWall == true)
             {
-                pbLayer2.BackgroundImage = Properties.Resources.Layer2_HallPic;
+                imgLayer2 = Properties.Resources.Layer2_Straight;
             }
-            else if (Layer2[0] == false && Layer2[1] == false && Layer2[2] == true)
+            else if (Layer2[0].isWall == false && Layer2[1].isWall == false && Layer2[2].isWall == true)
             {
-                pbLayer2.BackgroundImage = Properties.Resources.Layer2_DoorLeftPic;
+                imgLayer2 = Properties.Resources.Layer2_L;
             }
-            else if (Layer2[0] == false && Layer2[1] == false && Layer2[2] == false)
+            else if (Layer2[0].isWall == false && Layer2[1].isWall == false && Layer2[2].isWall == false)
             {
-                pbLayer2.BackgroundImage = Properties.Resources.Layer2_DoorRightaLeftPic;
+                imgLayer2 = Properties.Resources.Layer2_T;
             }
-            else if (Layer2[1] == true)
+            else if (Layer2[1].isWall == true)
             {
-                pbLayer2.BackgroundImage = Properties.Resources.Layer2_Wall2;
+                imgLayer2 = Properties.Resources.Layer2_Wall;
+            }
+
+
+            //Check if Entity is in Front
+
+            if (Layer1[1].entity is not null)
+            {
+                EntityinSight = true;
+                SetRecEntitySize(2);
+            }
+
+            else if (Layer2[1].entity is null && Layer1[1].entity is null)
+            {
+                EntityinSight = false;
+            }
+
+            else
+            {
+                EntityinSight = true;
+                SetRecEntitySize(1);
             }
         }
 
@@ -288,32 +361,52 @@ namespace fpdungeonCrawler
             GetPlayerView();
             for (int i = 6; i < 9; i++)
             {
-                Tile tile = player.View[i];
-                if (tile.Type == Tile.TileType.Wall)
+                int j = i - 6;
+
+                Layer3[j] = player.View[i];
+
+                if (Layer3[j].Type == Tile.TileType.Wall)
                 {
-                    Layer3[i - 6] = true;
+                    Layer3[j].isWall = true;
                 }
                 else
                 {
-                    Layer3[i - 6] = false;
+                    Layer3[j].isWall = false;
                 }
             }
-            if (Layer3[0] == true && Layer3[1] == false && Layer3[2] == true)
+            if (Layer3[0].isWall == true && Layer3[1].isWall == false && Layer3[2].isWall == true)
             {
-                pbLayer3.BackgroundImage = Properties.Resources.Layer3_Hall;
+                imgLayer3 = Properties.Resources.Layer3_Straight;
             }
-            else if (Layer3[0] == true && Layer3[1] == false && Layer3[2] == false)
+            else if (Layer3[0].isWall == true && Layer3[1].isWall == false && Layer3[2].isWall == false)
             {
-                pbLayer3.BackgroundImage = Properties.Resources.Layer3_DoorRightPic;
+                imgLayer3 = Properties.Resources.Layer3_R;
             }
-            else if (Layer3[0] == false && Layer3[1] == false && Layer3[2] == true)
+            else if (Layer3[0].isWall == false && Layer3[1].isWall == false && Layer3[2].isWall == true)
             {
-                pbLayer3.BackgroundImage = Properties.Resources.Layer3_DoorLeftPic;
+                imgLayer3 = Properties.Resources.Layer3_L;
             }
-            else if (Layer3[0] == false && Layer3[1] == false && Layer3[2] == false)
+            else if (Layer3[0].isWall == false && Layer3[1].isWall == false && Layer3[2].isWall == false)
             {
-                pbLayer3.BackgroundImage = Properties.Resources.Layer3_DoorLeftaRightPic;
+                imgLayer3 = Properties.Resources.Layer3_T;
             }
+        }
+
+        private void Check3TilesInFront()
+        {
+            Tile tile = map.mapTiles[player.GetPositionInFront(player, 3).Column, player.GetPositionInFront(player, 3).Row];
+
+            switch (tile.entity)
+            {
+                case null:
+                    break;
+                case not null:
+                    SetRecEntitySize(3);
+                    EntityinSight = true;
+                    break;
+            }
+
+
         }
 
 
@@ -322,22 +415,49 @@ namespace fpdungeonCrawler
             CheckLayer1();
             CheckLayer2();
             CheckLayer3();
+            Check3TilesInFront();
         }
 
 
-        
-        //public PictureBox OrkPicturebox(Form form)
-        //{
-        //    PictureBox PicBox = new();
-        //    PicBox.Size = new Size(600, 700);
-        //    PicBox.Location = new System.Drawing.Point(40, 40);
-        //    PicBox.BackColor = Color.Transparent;
-        //    PicBox.BorderStyle = BorderStyle.None;
-        //    PicBox.Image = Properties.Resources.OrkIdle1;
-        //    PicBox.SizeMode = PictureBoxSizeMode.StretchImage;
-        //    form.Controls.Add(PicBox);
-        //    PicBox.BringToFront();
-        //    return PicBox;
-        //}
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawImage(imgLayer3, recLayer3);
+            e.Graphics.DrawImage(imgLayer2, recLayer2);
+            e.Graphics.DrawImage(imgLayer1, recLayer1);
+
+            if (EntityinSight)
+            {
+                e.Graphics.DrawImage(imgEntity, recEntity);
+            }
+
+        }
+
+        public void CreateOrc()
+        {
+            Entity orc = new Entity();
+            orc.CurrentPosition = (1, 5);
+            orc.StartPosition = orc.CurrentPosition;
+            orc.isEnemy = true;
+            map.UpdateEntityLocation(orc);
+        }
+
+        public void SetRecEntitySize(int distance)
+        {
+            switch (distance)
+            {
+                case 3:
+                    recEntity.Size = new Size(120, 114);
+                    recEntity.Location = new Point(335, 350);
+                    break;
+                case 2:
+                    recEntity.Size = recLayer1.Size;
+                    recEntity.Location = recLayer1.Location;
+                    break;
+                case 1:
+                    recEntity.Size = recLayer2.Size;
+                    recEntity.Location = recLayer2.Location;
+                    break;
+            }
+        }
     }
 }

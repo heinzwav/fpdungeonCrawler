@@ -11,6 +11,8 @@ namespace fpdungeonCrawler
         public int healthpoints { get; set; }
         public int damage { get; set; }
 
+        public bool isEnemy { get; set; }
+
         public (int Column, int Row) CurrentPosition { get; set; }
 
         public (int Column, int Row) StartPosition { get; set; }

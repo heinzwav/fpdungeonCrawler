@@ -39,7 +39,7 @@
             // pbLayer3
             // 
             pbLayer3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pbLayer3.BackgroundImage = Properties.Resources.Layer3_Hall;
+            pbLayer3.BackgroundImage = Properties.Resources.Layer3_Straight;
             pbLayer3.BackgroundImageLayout = ImageLayout.Stretch;
             pbLayer3.Location = new Point(-5, -11);
             pbLayer3.Margin = new Padding(2);
@@ -52,12 +52,12 @@
             // 
             pbLayer2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pbLayer2.BackColor = SystemColors.ActiveBorder;
-            pbLayer2.BackgroundImage = Properties.Resources.Layer2_HallPic;
+            pbLayer2.BackgroundImage = Properties.Resources.Layer2_Straight;
             pbLayer2.BackgroundImageLayout = ImageLayout.Stretch;
-            pbLayer2.Location = new Point(164, 102);
+            pbLayer2.Location = new Point(190, 149);
             pbLayer2.Margin = new Padding(2);
             pbLayer2.Name = "pbLayer2";
-            pbLayer2.Size = new Size(494, 441);
+            pbLayer2.Size = new Size(429, 429);
             pbLayer2.TabIndex = 3;
             pbLayer2.TabStop = false;
             // 
@@ -65,13 +65,13 @@
             // 
             pbLayer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pbLayer1.BackColor = SystemColors.ControlDarkDark;
-            pbLayer1.BackgroundImage = Properties.Resources.Layer1_HallPic;
+            pbLayer1.BackgroundImage = Properties.Resources.Layer1_Straight;
             pbLayer1.BackgroundImageLayout = ImageLayout.Stretch;
             pbLayer1.Enabled = false;
-            pbLayer1.Location = new Point(308, 243);
+            pbLayer1.Location = new Point(288, 268);
             pbLayer1.Margin = new Padding(2);
             pbLayer1.Name = "pbLayer1";
-            pbLayer1.Size = new Size(207, 168);
+            pbLayer1.Size = new Size(231, 234);
             pbLayer1.TabIndex = 4;
             pbLayer1.TabStop = false;
             // 

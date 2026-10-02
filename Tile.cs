@@ -17,5 +17,7 @@ namespace fpdungeonCrawler
         public Image imgWall = Properties.Resources.WallTile;
         public Image imgFloor = Properties.Resources.FloorTile;
         public PictureBox PicBox;
+
+        public bool isWall;
     }
 }

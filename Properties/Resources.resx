@@ -118,62 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Layer1_WallPic1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer1_WallPic1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer1_HallPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer1_HallPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer3_DoorRightPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer3_DoorRightPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer2_HallPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer2_HallPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="FloorTile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FloorTile2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PlayerArrowNew" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PlayerArrowNew.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Layer2_DoorLeftPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer2_DoorLeftPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer2_Wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer2_Wall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer1_DoorRightaLeftPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer1_DoorRightaLeftPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer2_DoorRightaLeftPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer2_DoorRightaLeftPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer3_DoorLeftPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer3_DoorLeftPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer2_Wall2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer2_Wall2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer3_DoorLeftaRightPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer3_DoorLeftaRightPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer2_DoorRightPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer2_DoorRightPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer1_DoorLeftPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer1_DoorLeftPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer1_DoorRightPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer1_DoorRightPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="PlayerArrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PlayerArrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer3_Hall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer3_Hall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Layer1_WallPic" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Layer1_WallPic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="WallTile" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WallTile.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -186,5 +138,50 @@
   </data>
   <data name="OrkIdle2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\OrkIdle2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer1_L" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer1_L.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer1_R" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer1_R.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer1_T" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer1_T.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer2_Straight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer2_Straight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer3_L" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer3_L.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer3_R" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer3_R.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer3_Straight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer3_Straight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer3_T" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer3_T.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer3_Wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer3_Wall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer2_Wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer2_Wall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer1_Wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer1_Wall.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer1_Straight" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer1_Straight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer2_T" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer2_T.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer2_L" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer2_L.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Layer2_R" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Layer2_R.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

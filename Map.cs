@@ -34,6 +34,7 @@ namespace fpdungeonCrawler
                     tile.TilePositionX = i;
                     tile.TilePositionY = j;
                     tile.Type = Tile.TileType.Wall;
+                    tile.isWall = true;
                     mapTiles[i, j] = tile;
                 }                
             }
@@ -101,7 +102,15 @@ namespace fpdungeonCrawler
                 }
                 else
                 {
-                    PicBox.BackgroundImage = ChangePlayerArrowDirection(player);
+                    if(tile.entity == player)
+                    {
+                        PicBox.BackgroundImage = ChangePlayerArrowDirection(player);
+                    }
+                    else if (tile.entity.isEnemy)
+                    {
+                        PicBox.BackgroundImage = Properties.Resources.OrkIdle1;
+                    }
+                    
                 }
             }
         }
@@ -155,7 +164,20 @@ namespace fpdungeonCrawler
             tile.TilePositionX = col;
             tile.TilePositionY = row;
             tile.Type = Tile.TileType.Floor;
+            tile.isWall = false;
             mapTiles[col, row] = tile;
+        }
+
+
+        public void UpdateEntityLocation(Entity entity)
+        {
+            foreach (Tile tile in mapTiles)
+            {
+                if (tile.TilePositionX == entity.CurrentPosition.Column & tile.TilePositionY == entity.CurrentPosition.Row)
+                {
+                    tile.entity = entity;
+                }
+            }
         }
 
 
