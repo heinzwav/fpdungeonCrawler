@@ -84,6 +84,7 @@ namespace fpdungeonCrawler
             tile.TilePositionY = player.StartPosition.Row;
             tile.entity = player;
             map.mapTiles[player.StartPosition.Column, player.StartPosition.Row] = tile;
+            player.damage = 50;
             player.orientation = Player.PlayerOrientation.Up;
             return player;
         }
@@ -107,6 +108,10 @@ namespace fpdungeonCrawler
             {
                 player.PositionInFront = player.GetPositionInFront(player, 1);
                 if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].Type == Tile.TileType.Wall)
+                {
+                    return;
+                }
+                if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity is not null)
                 {
                     return;
                 }
@@ -149,6 +154,27 @@ namespace fpdungeonCrawler
                     player.orientation = Player.PlayerOrientation.Down;
                 }
             }
+
+            if (e.KeyCode == Keys.Space)
+            {
+                
+                if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity is null)
+                {
+                    return;
+                }
+                else
+                {
+                    Entity entity = map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity;
+                    player.MakeDamage(player, entity);
+                    if(entity.healthpoints <= 0)
+                    {
+                        entity = null;
+                        EntityinSight = false;
+                    }
+                }
+            }
+
+
             UpdatePlayerposition();
             map.UpdateMinimapUI(player);
             DrawEnvironment();
@@ -429,6 +455,11 @@ namespace fpdungeonCrawler
             {
                 e.Graphics.DrawImage(imgEntity, recEntity);
             }
+            else if (EntityinSight == false)
+            {
+                recEntity.Size = new Size(0, 0);
+                recEntity.Location = new Point(0, 0);
+            }
 
         }
 
@@ -437,6 +468,7 @@ namespace fpdungeonCrawler
             Entity orc = new Entity();
             orc.CurrentPosition = (1, 5);
             orc.StartPosition = orc.CurrentPosition;
+            orc.healthpoints = 200;
             orc.isEnemy = true;
             map.UpdateEntityLocation(orc);
         }

@@ -66,6 +66,16 @@ namespace fpdungeonCrawler
             }
             return player.PositionBehind;
         }
+
+        public void MakeDamage(Player player, Entity entity)
+        {
+            entity.healthpoints =- player.damage;
+
+            if (entity.healthpoints <= 0) 
+            {
+                entity = null;            
+            }
+        }
     }
 
 
