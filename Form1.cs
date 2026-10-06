@@ -10,54 +10,33 @@ namespace fpdungeonCrawler
         Player player = new Player();
 
 
-        Tile[] Layer1 = new Tile[3];
-        Tile[] Layer2 = new Tile[3];
-        Tile[] Layer3 = new Tile[3];
+        Tile[] tilesLayer1 = new Tile[3];
+        Tile[] tilesLayer2 = new Tile[3];
+        Tile[] tilesLayer3 = new Tile[3];
 
-
-
-
-        public Layer layer3 = new();
 
         //Layer 1
         public Layer layer1 = new();
-        public Size layer1Size = new Size(224, 234);
-        public Point layer1Location = new Point(288, 268);
+        public Size layer1Size = new Size(240, 234);
+        public Point layer1Location = new Point(280, 268);
 
         //Layer 2
         public Layer layer2 = new();
-        public Size layer1Size = new Size(224, 234);
-        public Point layer1Location = new Point(288, 268);
+        public Size layer2Size = new Size(480, 440);
+        public Point layer2Location = new Point(175, 150);
 
-        public Rectangle recLayer1 = new Rectangle
-        {
-            Size = new Size(224, 234),
-            Location = new Point(288, 268)
-        };
+        //Layer 3
+        public Layer layer3 = new();
+        public Size layer3Size = new Size(820, 690);
+        public Point layer3Location = new Point(0, 0);
 
-        public Rectangle recLayer2 = new Rectangle
-        {
-            Size = new Size(408, 406),
-            Location = new Point(190, 150)
-        };
-
-        public Rectangle recLayer3 = new Rectangle
-        {
-            Size = new Size(820, 690),
-            Location = new Point(0, 0)
-        };
-
-        public Rectangle recEntity = new Rectangle
-        {
-            Size = new Size(408, 406),
-            Location = new Point(190, 150)
-        };
-
+        //Entity Layer
+        public Layer layerEntity = new();
+        public Size layerEntitySize = new Size(408, 406);
+        public Point layerEntityLocation = new Point(190, 150);
         public bool EntityinSight;
-        public Image imgEntity = Properties.Resources.OrkIdle1;
-        public Image imgLayer1 = Properties.Resources.Layer1_Straight;
-        public Image imgLayer2 = Properties.Resources.Layer2_Straight;
-        public Image imgLayer3 = Properties.Resources.Layer3_Straight;
+
+        Layer[] layers = new Layer[3];
 
         DamageAnimation dmgAnimation = new();
 
@@ -68,15 +47,21 @@ namespace fpdungeonCrawler
         };
 
 
-
         public Form1()
         {
             InitializeComponent();
 
-
+            //Map Generation
             map.GenerateMap();
             player = GeneratePlayer();
             map.GenerateMinimapUI();
+
+            //Viewpoint Generation
+            layer1 = layer1.InitializeLayer(layer1Size, layer1Location, Properties.Resources.Layer1_Straight);
+            layer2 = layer2.InitializeLayer(layer2Size, layer2Location, Properties.Resources.Layer2_Straight);
+            layer3 = layer3.InitializeLayer(layer3Size, layer3Location, Properties.Resources.Layer3_Straight);
+            layerEntity = layerEntity.InitializeLayer(layerEntitySize, layerEntityLocation, Properties.Resources.Ork_Idle);
+
 
             CreateOrc();
 
@@ -211,7 +196,7 @@ namespace fpdungeonCrawler
                 {
                     for (int j = player.CurrentPosition.Column - 1; j <= player.CurrentPosition.Column + 1; j++)
                     {
-                        if (i < 0 || j < 0)
+                        if (i < 0 || j < 0 || i > 9 || j > 9)
                         {
                             k++;
                         }
@@ -232,7 +217,7 @@ namespace fpdungeonCrawler
                     for (int j = player.CurrentPosition.Column + 1; j >= player.CurrentPosition.Column - 1; j--)
                     {
                         if (i < 0 || j < 0 || i > 9 || j > 9)
-                        {
+                        {                            
                             k++;
                         }
                         else
@@ -251,8 +236,9 @@ namespace fpdungeonCrawler
                 {
                     for (int j = player.CurrentPosition.Row + 1; j >= player.CurrentPosition.Row - 1; j--)
                     {
-                        if (i < 0 || j < 0)
+                        if (i < 0 || j < 0 || i > 9 || j > 9)
                         {
+                            EntityinSight = false;
                             k++;
                         }
                         else
@@ -272,7 +258,7 @@ namespace fpdungeonCrawler
                 {
                     for (int j = player.CurrentPosition.Row - 1; j <= player.CurrentPosition.Row + 1; j++)
                     {
-                        if (i < 0 || j < 0)
+                        if (i < 0 || j < 0 || i > 9 || j > 9)
                         {
                             k++;
                         }
@@ -290,49 +276,51 @@ namespace fpdungeonCrawler
 
         private void CheckLayer1()
         {
+            layer1.isVisible = true;
             GetPlayerView();
             for (int i = 0; i < 3; i++)
             {
                 if (player.View[i].TilePositionX < 0 || player.View[i].TilePositionY < 0)
                 {
-                    Layer1[i].isWall = true;
+                    tilesLayer1[i].isWall = true;
+                    tilesLayer1[i].entity = null;
                 }
                 else
                 {
-                    Layer1[i] = player.View[i];
-                    if (Layer1[i].Type == Tile.TileType.Wall)
+                    tilesLayer1[i] = player.View[i];
+                    if (tilesLayer1[i].Type == Tile.TileType.Wall)
                     {
-                        Layer1[i].isWall = true;
+                        tilesLayer1[i].isWall = true;
                     }
                     else
                     {
-                        Layer1[i].isWall = false;
+                        tilesLayer1[i].isWall = false;
                     }
                 }
             }
 
-            if (Layer1[0].isWall == true && Layer1[1].isWall == false && Layer1[2].isWall == false)
+            if (tilesLayer1[0].isWall == true && tilesLayer1[1].isWall == false && tilesLayer1[2].isWall == false)
             {
-                imgLayer1 = Properties.Resources.Layer1_R;
+                layer1.img = Properties.Resources.Layer1_R;
             }
-            else if (Layer1[0].isWall == true && Layer1[1].isWall == false && Layer1[2].isWall == true)
+            else if (tilesLayer1[0].isWall == true && tilesLayer1[1].isWall == false && tilesLayer1[2].isWall == true)
             {
-                imgLayer1 = Properties.Resources.Layer1_Straight;
+                layer1.img = Properties.Resources.Layer1_Straight;
             }
-            else if (Layer1[0].isWall == false && Layer1[1].isWall == false && Layer1[2].isWall == true)
+            else if (tilesLayer1[0].isWall == false && tilesLayer1[1].isWall == false && tilesLayer1[2].isWall == true)
             {
-                imgLayer1 = Properties.Resources.Layer1_L;
+                layer1.img = Properties.Resources.Layer1_L;
             }
-            else if (Layer1[0].isWall == false && Layer1[1].isWall == false && Layer1[2].isWall == false)
+            else if (tilesLayer1[0].isWall == false && tilesLayer1[1].isWall == false && tilesLayer1[2].isWall == false)
             {
-                imgLayer1 = Properties.Resources.Layer1_T;
+                layer1.img = Properties.Resources.Layer1_T;
             }
-            else if (Layer1[1].isWall == true)
+            else if (tilesLayer1[1].isWall == true)
             {
-                imgLayer1 = Properties.Resources.Layer1_Wall;
+                layer1.img = Properties.Resources.Layer1_Wall;
             }
 
-            if (Layer1[1].entity is null)
+            if (tilesLayer1[1].entity is null)
             {
                 EntityinSight = false;
             }
@@ -345,53 +333,55 @@ namespace fpdungeonCrawler
 
         private void CheckLayer2()
         {
+            layer1.isVisible = true;
+            layer2.isVisible = true;
             GetPlayerView();
             for (int i = 3; i < 6; i++)
             {
                 int j = i - 3;
 
-                Layer2[j] = player.View[i];
-                if (Layer2[j].Type == Tile.TileType.Wall)
+                tilesLayer2[j] = player.View[i];
+                if (tilesLayer2[j].Type == Tile.TileType.Wall)
                 {
-                    Layer2[j].isWall = true;
+                    tilesLayer2[j].isWall = true;
                 }
                 else
                 {
-                    Layer2[j].isWall = false;
+                    tilesLayer2[j].isWall = false;
                 }
             }
-            if (Layer2[0].isWall == true && Layer2[1].isWall == false && Layer2[2].isWall == false)
+            if (tilesLayer2[0].isWall == true && tilesLayer2[1].isWall == false && tilesLayer2[2].isWall == false)
             {
-                imgLayer2 = Properties.Resources.Layer2_R;
+                layer2.img = Properties.Resources.Layer2_R;
             }
-            else if (Layer2[0].isWall == true && Layer2[1].isWall == false && Layer2[2].isWall == true)
+            else if (tilesLayer2[0].isWall == true && tilesLayer2[1].isWall == false && tilesLayer2[2].isWall == true)
             {
-                imgLayer2 = Properties.Resources.Layer2_Straight;
+                layer2.img = Properties.Resources.Layer2_Straight;
             }
-            else if (Layer2[0].isWall == false && Layer2[1].isWall == false && Layer2[2].isWall == true)
+            else if (tilesLayer2[0].isWall == false && tilesLayer2[1].isWall == false && tilesLayer2[2].isWall == true)
             {
-                imgLayer2 = Properties.Resources.Layer2_L;
+                layer2.img = Properties.Resources.Layer2_L;
             }
-            else if (Layer2[0].isWall == false && Layer2[1].isWall == false && Layer2[2].isWall == false)
+            else if (tilesLayer2[0].isWall == false && tilesLayer2[1].isWall == false && tilesLayer2[2].isWall == false)
             {
-                imgLayer2 = Properties.Resources.Layer2_T;
+                layer2.img = Properties.Resources.Layer2_T;
             }
-            else if (Layer2[1].isWall == true)
+            else if (tilesLayer2[1].isWall == true)
             {
-                imgLayer2 = Properties.Resources.Layer2_Wall;
-                imgLayer1.Size = new System.Drawing.Size(0, 0);
+                layer2.img = Properties.Resources.Layer2_Wall;
+                layer1.isVisible = false;
             }
 
 
             //Check if Entity is in Front
 
-            if (Layer1[1].entity is not null)
+            if (tilesLayer1[1].entity is not null)
             {
                 EntityinSight = true;
                 SetRecEntitySize(2);
             }
 
-            else if (Layer2[1].entity is null && Layer1[1].entity is null)
+            else if (tilesLayer2[1].entity is null && tilesLayer1[1].entity is null)
             {
                 EntityinSight = false;
             }
@@ -405,44 +395,45 @@ namespace fpdungeonCrawler
 
         private void CheckLayer3()
         {
+            layer3.isVisible = true;
             GetPlayerView();
             for (int i = 6; i < 9; i++)
             {
                 int j = i - 6;
 
-                Layer3[j] = player.View[i];
+                tilesLayer3[j] = player.View[i];
 
-                if (Layer3[j].Type == Tile.TileType.Wall)
+                if (tilesLayer3[j].Type == Tile.TileType.Wall)
                 {
-                    Layer3[j].isWall = true;
+                    tilesLayer3[j].isWall = true;
                 }
                 else
                 {
-                    Layer3[j].isWall = false;
+                    tilesLayer3[j].isWall = false;
                 }
             }
-            if (Layer3[0].isWall == true && Layer3[1].isWall == false && Layer3[2].isWall == true)
+            if (tilesLayer3[0].isWall == true && tilesLayer3[1].isWall == false && tilesLayer3[2].isWall == true)
             {
-                imgLayer3 = Properties.Resources.Layer3_Straight;
+                layer3.img = Properties.Resources.Layer3_Straight;
             }
-            else if (Layer3[0].isWall == true && Layer3[1].isWall == false && Layer3[2].isWall == false)
+            else if (tilesLayer3[0].isWall == true && tilesLayer3[1].isWall == false && tilesLayer3[2].isWall == false)
             {
-                imgLayer3 = Properties.Resources.Layer3_R;
+                layer3.img = Properties.Resources.Layer3_R;
             }
-            else if (Layer3[0].isWall == false && Layer3[1].isWall == false && Layer3[2].isWall == true)
+            else if (tilesLayer3[0].isWall == false && tilesLayer3[1].isWall == false && tilesLayer3[2].isWall == true)
             {
-                imgLayer3 = Properties.Resources.Layer3_L;
+                layer3.img = Properties.Resources.Layer3_L;
             }
-            else if (Layer3[0].isWall == false && Layer3[1].isWall == false && Layer3[2].isWall == false)
+            else if (tilesLayer3[0].isWall == false && tilesLayer3[1].isWall == false && tilesLayer3[2].isWall == false)
             {
-                imgLayer3 = Properties.Resources.Layer3_T;
+                layer3.img = Properties.Resources.Layer3_T;
             }
         }
 
         private void Check3TilesInFront()
         {
-            if(player.GetPositionInFront(player, 3).Column < 0 || player.GetPositionInFront(player, 3).Column > 10 ||
-                player.GetPositionInFront(player, 3).Row < 0 || player.GetPositionInFront(player, 3).Row > 10)
+            if(player.GetPositionInFront(player, 3).Column < 0 || player.GetPositionInFront(player, 3).Column > 9 ||
+                player.GetPositionInFront(player, 3).Row < 0 || player.GetPositionInFront(player, 3).Row > 9)
             {
                 return;
             }
@@ -474,18 +465,27 @@ namespace fpdungeonCrawler
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawImage(imgLayer3, recLayer3);
-            e.Graphics.DrawImage(imgLayer2, recLayer2);
-            e.Graphics.DrawImage(imgLayer1, recLayer1);
+            layers[0] = layer3;
+            layers[1] = layer2;
+            layers[2] = layer1;
+
+            foreach (Layer layer in layers)
+            {
+                if (layer.isVisible)
+                {
+                    e.Graphics.DrawImage(layer.img, layer.rec);
+                }
+            }
+            
 
             if (EntityinSight)
             {
-                e.Graphics.DrawImage(imgEntity, recEntity);
+                e.Graphics.DrawImage(layerEntity.img, layerEntity.rec);
             }
             else if (EntityinSight == false)
             {
-                recEntity.Size = new Size(0, 0);
-                recEntity.Location = new Point(0, 0);
+                layerEntity.rec.Size = new Size(0, 0);
+                layerEntity.rec.Location = new Point(0, 0);
             }
 
             dmgAnimation.DoDamageAnimation(e.Graphics);
@@ -506,16 +506,16 @@ namespace fpdungeonCrawler
             switch (distance)
             {
                 case 3:
-                    recEntity.Size = new Size(120, 114);
-                    recEntity.Location = new Point(335, 350);
+                    layerEntity.rec.Size = new Size(120, 114);
+                    layerEntity.rec.Location = new Point(335, 350);
                     break;
                 case 2:
-                    recEntity.Size = recLayer1.Size;
-                    recEntity.Location = recLayer1.Location;
+                    layerEntity.rec.Size = layer1.rec.Size;
+                    layerEntity.rec.Location = layer1.rec.Location;
                     break;
                 case 1:
-                    recEntity.Size = recLayer2.Size;
-                    recEntity.Location = recLayer2.Location;
+                    layerEntity.rec.Size = layer2.rec.Size;
+                    layerEntity.rec.Location = layer2.rec.Location;
                     break;
             }
         }

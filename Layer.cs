@@ -8,19 +8,21 @@ namespace fpdungeonCrawler
     {
         public bool isVisible = true;
         public Rectangle rec;
+        public Image img;
 
         public Rectangle CreateRec(Size size, Point point)
         {
             Rectangle rec = new();
-            rec.Size = new Size(224, 234);
-            rec.Location = new Point(288, 268);
+            rec.Size = size;
+            rec.Location = point;
             return rec;
         }
 
-        public Layer InitializeLayer(Size size, Point point)
+        public Layer InitializeLayer(Size size, Point point, Image img)
         {
             Layer layer = new Layer();
             layer.rec = CreateRec(size, point);
+            layer.img = img;
             return layer;
         }
     }
