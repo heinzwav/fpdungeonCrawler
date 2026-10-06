@@ -14,6 +14,21 @@ namespace fpdungeonCrawler
         Tile[] Layer2 = new Tile[3];
         Tile[] Layer3 = new Tile[3];
 
+
+
+
+        public Layer layer3 = new();
+
+        //Layer 1
+        public Layer layer1 = new();
+        public Size layer1Size = new Size(224, 234);
+        public Point layer1Location = new Point(288, 268);
+
+        //Layer 2
+        public Layer layer2 = new();
+        public Size layer1Size = new Size(224, 234);
+        public Point layer1Location = new Point(288, 268);
+
         public Rectangle recLayer1 = new Rectangle
         {
             Size = new Size(224, 234),
@@ -44,6 +59,15 @@ namespace fpdungeonCrawler
         public Image imgLayer2 = Properties.Resources.Layer2_Straight;
         public Image imgLayer3 = Properties.Resources.Layer3_Straight;
 
+        DamageAnimation dmgAnimation = new();
+
+        public System.Windows.Forms.Timer gameTimer = new()
+        {
+            Interval = 33,
+            Enabled = true
+        };
+
+
 
         public Form1()
         {
@@ -59,6 +83,7 @@ namespace fpdungeonCrawler
             GetPlayerView();
 
             this.Paint += Form1_Paint;
+            this.gameTimer.Tick += GameTimerTick;
             this.Controls.Add(map.minimap);
             this.Controls.SetChildIndex(map.minimap, 0);
             map.UpdateMinimapUI(player);
@@ -157,20 +182,15 @@ namespace fpdungeonCrawler
 
             if (e.KeyCode == Keys.Space)
             {
-                
+                player.PositionInFront = player.GetPositionInFront(player, 1);
                 if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity is null)
                 {
                     return;
                 }
                 else
-                {
-                    Entity entity = map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity;
-                    player.MakeDamage(player, entity);
-                    if(entity.healthpoints <= 0)
-                    {
-                        entity = null;
-                        EntityinSight = false;
-                    }
+                {                  
+                    player.DoDamage(player, map);
+                    dmgAnimation.StartAnimation();
                 }
             }
 
@@ -359,6 +379,7 @@ namespace fpdungeonCrawler
             else if (Layer2[1].isWall == true)
             {
                 imgLayer2 = Properties.Resources.Layer2_Wall;
+                imgLayer1.Size = new System.Drawing.Size(0, 0);
             }
 
 
@@ -420,6 +441,12 @@ namespace fpdungeonCrawler
 
         private void Check3TilesInFront()
         {
+            if(player.GetPositionInFront(player, 3).Column < 0 || player.GetPositionInFront(player, 3).Column > 10 ||
+                player.GetPositionInFront(player, 3).Row < 0 || player.GetPositionInFront(player, 3).Row > 10)
+            {
+                return;
+            }
+
             Tile tile = map.mapTiles[player.GetPositionInFront(player, 3).Column, player.GetPositionInFront(player, 3).Row];
 
             switch (tile.entity)
@@ -461,6 +488,7 @@ namespace fpdungeonCrawler
                 recEntity.Location = new Point(0, 0);
             }
 
+            dmgAnimation.DoDamageAnimation(e.Graphics);
         }
 
         public void CreateOrc()
@@ -490,6 +518,13 @@ namespace fpdungeonCrawler
                     recEntity.Location = recLayer2.Location;
                     break;
             }
+        }
+
+
+        private void GameTimerTick(object sender, EventArgs e)
+        {
+            dmgAnimation.Update();
+            Invalidate();
         }
     }
 }

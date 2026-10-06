@@ -10,9 +10,9 @@ namespace fpdungeonCrawler
         public enum PlayerOrientation { Left, Up, Right, Down }
         public PlayerOrientation orientation = PlayerOrientation.Up;
 
-        public (int Column, int Row) CurrentPosition { get; set; } = new(1, 7);
+        public new (int Column, int Row) CurrentPosition { get; set; } = new(1, 7);
 
-        public (int Column, int Row) StartPosition { get; set; } = new(1, 7);
+        public new (int Column, int Row) StartPosition { get; set; } = new(1, 7);
 
         public (int Column, int Row) PositionInFront { get; set; }
 
@@ -67,15 +67,24 @@ namespace fpdungeonCrawler
             return player.PositionBehind;
         }
 
-        public void MakeDamage(Player player, Entity entity)
+        public void DoDamage(Player player, Map map)
         {
-            entity.healthpoints =- player.damage;
-
-            if (entity.healthpoints <= 0) 
+            Tile tile = map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row];
+            if (tile?.entity != null)
             {
-                entity = null;            
+                Entity entity;
+                entity = tile.entity;
+
+
+                entity.healthpoints -= player.damage;
+
+                if (entity.healthpoints <= 0)
+                {
+                    tile.entity = null;
+                }
             }
         }
+
     }
 
 
