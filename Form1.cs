@@ -1,4 +1,6 @@
+using Microsoft.VisualBasic.ApplicationServices;
 using System.Diagnostics.Eventing.Reader;
+using System.Media;
 using System.Resources;
 using System.Timers;
 
@@ -38,7 +40,10 @@ namespace fpdungeonCrawler
 
         Layer[] layers = new Layer[3];
 
+        
+        //Animations
         DamageAnimation dmgAnimation = new();
+        Animation orcIdle = new();
 
         public System.Windows.Forms.Timer gameTimer = new()
         {
@@ -64,6 +69,7 @@ namespace fpdungeonCrawler
 
 
             CreateOrc();
+            CreateOrcIdleAnimation();
 
             GetPlayerView();
 
@@ -84,6 +90,9 @@ namespace fpdungeonCrawler
 
 
             this.Invalidate();
+            System.Media.SoundPlayer soundPlayer = new System.Media.SoundPlayer();
+            soundPlayer.SoundLocation = @"C:\Users\rinkhe\Downloads\DarkFantasyLoop.wav";
+            soundPlayer.PlayLooping();
         }
 
         public Player GeneratePlayer()
@@ -124,7 +133,7 @@ namespace fpdungeonCrawler
                 if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity is not null)
                 {
                     return;
-                }
+                }                
                 player.CurrentPosition = (player.PositionInFront);
             }
 
@@ -173,7 +182,10 @@ namespace fpdungeonCrawler
                     return;
                 }
                 else
-                {                  
+                {
+                    System.Media.SoundPlayer OrcSound = new System.Media.SoundPlayer();
+                    OrcSound.SoundLocation = @"C:\Users\rinkhe\Downloads\weaponWhoosh.wav";
+                    OrcSound.Play();
                     player.DoDamage(player, map);
                     dmgAnimation.StartAnimation();
                 }
@@ -196,7 +208,7 @@ namespace fpdungeonCrawler
                 {
                     for (int j = player.CurrentPosition.Column - 1; j <= player.CurrentPosition.Column + 1; j++)
                     {
-                        if (i < 0 || j < 0 || i > 9 || j > 9)
+                        if (i < 0 || j < 0 || i > map.SizeX-1 || j > map.SizeY-1)
                         {
                             k++;
                         }
@@ -480,6 +492,7 @@ namespace fpdungeonCrawler
 
             if (EntityinSight)
             {
+                layerEntity.img = orcIdle.GetCurrentFrameSprite(orcIdle.currentFrame);
                 e.Graphics.DrawImage(layerEntity.img, layerEntity.rec);
             }
             else if (EntityinSight == false)
@@ -499,6 +512,16 @@ namespace fpdungeonCrawler
             orc.healthpoints = 200;
             orc.isEnemy = true;
             map.UpdateEntityLocation(orc);
+        }
+
+        public void CreateOrcIdleAnimation()
+        {
+            orcIdle.frameSprites = new Image[2];
+            orcIdle.frameSprites[0] = Properties.Resources.OrkIdle1;
+            orcIdle.frameSprites[1] = Properties.Resources.OrkIdle2;
+            orcIdle.maxFrames = 2;
+            orcIdle.interval = 16;
+            orcIdle.isActive = true;
         }
 
         public void SetRecEntitySize(int distance)
@@ -524,6 +547,7 @@ namespace fpdungeonCrawler
         private void GameTimerTick(object sender, EventArgs e)
         {
             dmgAnimation.Update();
+            orcIdle.Loop();
             Invalidate();
         }
     }

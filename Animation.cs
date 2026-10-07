@@ -6,21 +6,12 @@ namespace fpdungeonCrawler
 {
     public class Animation
     {
-        public System.Windows.Forms.Timer timer = new();
-        int interval = 33;
+        public int interval;
+        public int currentTick = 0;
         public int currentFrame = 0;
         public int maxFrames;
         public bool isActive;
-
-
-
-        public System.Windows.Forms.Timer InitializeTimer()
-        {
-            timer.Interval = interval;
-            timer.Enabled = true;
-            timer.Start();
-            return timer;
-        }
+        public Image[] frameSprites;
 
 
         public void StartAnimation()
@@ -40,6 +31,33 @@ namespace fpdungeonCrawler
             {
                 isActive = false;
             }
+        }
+
+        public void Loop()
+        {
+            if (!isActive)
+            { return; }
+
+            currentTick++;
+
+            if(currentTick < interval)
+            { return; }
+
+            if (currentTick == interval * (currentFrame+1))
+            {
+                currentFrame++;
+            }
+
+            if (currentFrame >= maxFrames)
+            {
+                currentFrame = 0; 
+                currentTick = 0;
+            }
+        }
+
+        public Image GetCurrentFrameSprite(int currentframe)
+        {
+            return frameSprites[currentFrame];            
         }
     }
 }

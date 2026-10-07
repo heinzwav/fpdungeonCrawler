@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Media;
 using System.Text;
 
 namespace fpdungeonCrawler
@@ -80,6 +81,9 @@ namespace fpdungeonCrawler
 
                 if (entity.healthpoints <= 0)
                 {
+                    System.Media.SoundPlayer OrcSound = new System.Media.SoundPlayer();
+                    OrcSound.SoundLocation = @"C:\Users\rinkhe\Downloads\SchattenFlieht.wav";
+                    OrcSound.Play();
                     tile.entity = null;
                 }
             }
