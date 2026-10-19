@@ -26,13 +26,6 @@ namespace fpdungeonCrawler
         {
             entity.healthpoints -= damage;
         }
-
-
-        //public void Move(Enum direction)
-        //{
-        //    if (direction = direction.Up)
-        //        Entity.CurrentPosition.Column, player.CurrentPosition.Row + 1
-        //}
     }
 
 }

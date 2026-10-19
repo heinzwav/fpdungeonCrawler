@@ -10,7 +10,7 @@ using static fpdungeonCrawler.Player;
 using static System.Net.WebRequestMethods;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
-namespace fpdungeonCrawler
+namespace fpdungeonCrawler.Map
 {
     public class Map
     {
@@ -36,7 +36,7 @@ namespace fpdungeonCrawler
                     tile.Type = Tile.TileType.Wall;
                     tile.isWall = true;
                     mapTiles[i, j] = tile;
-                }                
+                }
             }
             GeneratePaths();
         }
@@ -62,22 +62,22 @@ namespace fpdungeonCrawler
                 PicBox.BackgroundImageLayout = ImageLayout.Stretch;
                 PicBox.Margin = new Padding(0);
                 pictureboxes[tile.TilePositionX, tile.TilePositionY] = PicBox;
-                
-                
-                switch (tile.Type)
-                    {
-                        case Tile.TileType.Wall:
-                            if (tile.entity == null) PicBox.BackgroundImage = Properties.Resources.WallTile;
-                            break;
 
-                        case Tile.TileType.Floor:
-                            PicBox.BackgroundImage = Properties.Resources.FloorTile;
-                            break;
-                        default:
-                            break;
-                    }
+
+                switch (tile.Type)
+                {
+                    case Tile.TileType.Wall:
+                        if (tile.entity == null) PicBox.BackgroundImage = Properties.Resources.WallTile;
+                        break;
+
+                    case Tile.TileType.Floor:
+                        PicBox.BackgroundImage = Properties.Resources.FloorTile;
+                        break;
+                    default:
+                        break;
                 }
             }
+        }
 
         //public void UpdateMinimapUI(Player player)
         //{
@@ -119,13 +119,25 @@ namespace fpdungeonCrawler
         {
             player.PositionInFront = player.GetPositionInFront(player, 1);
             player.PositionBehind = player.GetPositionBehind(player);
+
+            Tile tile;
             Tile[] tiles = new Tile[6];
-            tiles[0] = mapTiles[player.PositionInFront.Column, player.PositionInFront.Row];
-            tiles[1] = mapTiles[player.CurrentPosition.Column, player.CurrentPosition.Row];
-            tiles[2] = mapTiles[player.PositionBehind.Column, player.PositionBehind.Row];
-            tiles[3] = mapTiles[player.GetPositionInFront(player, 2).Column, player.GetPositionInFront(player, 2).Row];
-            tiles[4] = mapTiles[player.GetPositionInFront(player, 3).Column, player.GetPositionInFront(player, 3).Row];
-            tiles[5] = mapTiles[player.GetPositionInFront(player, 4).Column, player.GetPositionInFront(player, 4).Row];
+
+
+            for (int j = -1; j < 5; j++)
+            {
+                if (player.GetPositionInFront(player, j).Column < 0 || player.GetPositionInFront(player, j).Column >= 9
+                    || player.GetPositionInFront(player, j).Row < 0 || player.GetPositionInFront(player, j).Row >= 9)
+                {
+                    tiles[j+1] = new Tile();
+                }
+                else
+                {
+                    tiles[j + 1] = mapTiles[player.GetPositionInFront(player, j).Column, player.GetPositionInFront(player, j).Row];
+                }
+                
+            }
+
 
 
             for (int i = 0; i < tiles.Length; i++)

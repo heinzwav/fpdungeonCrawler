@@ -1,4 +1,5 @@
-﻿using System;
+﻿using fpdungeonCrawler.Map;
+using System;
 using System.Collections.Generic;
 using System.Media;
 using System.Text;
@@ -68,22 +69,20 @@ namespace fpdungeonCrawler
             return player.PositionBehind;
         }
 
-        public void DoDamage(Player player, Map map)
+        public void DoDamage(Player player, Map map, Audiomanager audiomanager)
         {
             Tile tile = map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row];
             if (tile?.entity != null)
             {
                 Entity entity;
                 entity = tile.entity;
-
-
                 entity.healthpoints -= player.damage;
+
+                audiomanager.PlayAudio(Properties.Resources.weaponWhoosh);
 
                 if (entity.healthpoints <= 0)
                 {
-                    System.Media.SoundPlayer OrcSound = new System.Media.SoundPlayer();
-                    OrcSound.SoundLocation = @"C:\Users\rinkhe\Downloads\SchattenFlieht.wav";
-                    OrcSound.Play();
+                    audiomanager.PlayAudio(Properties.Resources.SchattenFlieht);
                     tile.entity = null;
                 }
             }

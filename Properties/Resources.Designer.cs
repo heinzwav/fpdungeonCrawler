@@ -280,12 +280,30 @@ namespace fpdungeonCrawler.Properties {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.IO.UnmanagedMemoryStream ähnlich wie System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream SchattenFlieht {
+            get {
+                return ResourceManager.GetStream("SchattenFlieht", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap WallTile {
             get {
                 object obj = ResourceManager.GetObject("WallTile", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.IO.UnmanagedMemoryStream ähnlich wie System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream weaponWhoosh {
+            get {
+                return ResourceManager.GetStream("weaponWhoosh", resourceCulture);
             }
         }
     }

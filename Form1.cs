@@ -1,3 +1,5 @@
+using fpdungeonCrawler.Map;
+using fpdungeonCrawler.UI;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Diagnostics.Eventing.Reader;
 using System.Media;
@@ -10,6 +12,8 @@ namespace fpdungeonCrawler
     {
         Map map = new();
         Player player = new Player();
+
+        UIManager uiManager = new UIManager();
 
 
         Tile[] tilesLayer1 = new Tile[3];
@@ -45,12 +49,16 @@ namespace fpdungeonCrawler
         DamageAnimation dmgAnimation = new();
         Animation orcIdle = new();
 
+        //GameTimer
         public System.Windows.Forms.Timer gameTimer = new()
         {
             Interval = 33,
             Enabled = true
         };
 
+        //Audio
+        Audiomanager audiomanager = new Audiomanager();
+        Audiomanager musicmanager = new Audiomanager();
 
         public Form1()
         {
@@ -90,9 +98,8 @@ namespace fpdungeonCrawler
 
 
             this.Invalidate();
-            System.Media.SoundPlayer soundPlayer = new System.Media.SoundPlayer();
-            soundPlayer.SoundLocation = @"C:\Users\rinkhe\Downloads\DarkFantasyLoop.wav";
-            soundPlayer.PlayLooping();
+
+            musicmanager.PlayLoop(Properties.Resources.DarkFantasyLoop);
         }
 
         public Player GeneratePlayer()
@@ -183,10 +190,8 @@ namespace fpdungeonCrawler
                 }
                 else
                 {
-                    System.Media.SoundPlayer OrcSound = new System.Media.SoundPlayer();
-                    OrcSound.SoundLocation = @"C:\Users\rinkhe\Downloads\weaponWhoosh.wav";
-                    OrcSound.Play();
-                    player.DoDamage(player, map);
+                    audiomanager.PlayAudio(Properties.Resources.weaponWhoosh);
+                    player.DoDamage(player, map, audiomanager);
                     dmgAnimation.StartAnimation();
                 }
             }
@@ -507,7 +512,7 @@ namespace fpdungeonCrawler
         public void CreateOrc()
         {
             Entity orc = new Entity();
-            orc.CurrentPosition = (1, 5);
+            orc.CurrentPosition = (1, 4);
             orc.StartPosition = orc.CurrentPosition;
             orc.healthpoints = 200;
             orc.isEnemy = true;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace fpdungeonCrawler
+namespace fpdungeonCrawler.Map
 {
     public class Tile
     {
