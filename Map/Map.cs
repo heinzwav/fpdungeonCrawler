@@ -21,6 +21,9 @@ namespace fpdungeonCrawler.Map
         public PictureBox[,] pictureboxes = new PictureBox[10, 10];
         public TableLayoutPanel minimap = new();
 
+        Tile[] playerViewRange = new Tile[6];
+        private bool FirstStartUp = true;
+
         TableLayoutPanelCellPosition[] PlayerViewTiles = new TableLayoutPanelCellPosition[9];
 
 
@@ -79,49 +82,19 @@ namespace fpdungeonCrawler.Map
             }
         }
 
-        //public void UpdateMinimapUI(Player player)
-        //{
-        //    foreach (Tile tile in mapTiles)
-        //    {
-        //        PictureBox PicBox = pictureboxes[tile.TilePositionX, tile.TilePositionY];
-
-        //        if (tile.entity == null)
-        //        {
-        //            switch (tile.Type)
-        //            {
-        //                case Tile.TileType.Wall:
-        //                    PicBox.BackgroundImage = Properties.Resources.WallTile;
-        //                    break;
-
-        //                case Tile.TileType.Floor:
-        //                    PicBox.BackgroundImage = Properties.Resources.FloorTile;
-        //                    break;
-        //                default:
-        //                    break;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            if(tile.entity == player)
-        //            {
-        //                PicBox.BackgroundImage = ChangePlayerArrowDirection(player);
-        //            }
-        //            else if (tile.entity.isEnemy)
-        //            {
-        //                PicBox.BackgroundImage = Properties.Resources.OrkIdle1;
-        //            }
-
-        //        }
-        //    }
-        //}
-
         public void UpdateMinimapUI(Player player)
         {
+            if (!FirstStartUp)
+            {
+                ResetPlayerViewRange();
+            }
+            FirstStartUp = false;
+
             player.PositionInFront = player.GetPositionInFront(player, 1);
             player.PositionBehind = player.GetPositionBehind(player);
 
             Tile tile;
-            Tile[] tiles = new Tile[6];
+            playerViewRange = new Tile[6];
 
 
             for (int j = -1; j < 5; j++)
@@ -129,24 +102,21 @@ namespace fpdungeonCrawler.Map
                 if (player.GetPositionInFront(player, j).Column < 0 || player.GetPositionInFront(player, j).Column >= 9
                     || player.GetPositionInFront(player, j).Row < 0 || player.GetPositionInFront(player, j).Row >= 9)
                 {
-                    tiles[j+1] = new Tile();
+                    playerViewRange[j + 1] = new Tile();
                 }
                 else
                 {
-                    tiles[j + 1] = mapTiles[player.GetPositionInFront(player, j).Column, player.GetPositionInFront(player, j).Row];
+                    playerViewRange[j + 1] = mapTiles[player.GetPositionInFront(player, j).Column, player.GetPositionInFront(player, j).Row];
                 }
-                
             }
 
-
-
-            for (int i = 0; i < tiles.Length; i++)
+            for (int i = 0; i < playerViewRange.Length; i++)
             {
-                PictureBox PicBox = pictureboxes[tiles[i].TilePositionX, tiles[i].TilePositionY];
+                PictureBox PicBox = pictureboxes[playerViewRange[i].TilePositionX, playerViewRange[i].TilePositionY];
 
-                if (tiles[i].entity == null)
+                if (playerViewRange[i].entity == null)
                 {
-                    switch (tiles[i].Type)
+                    switch (playerViewRange[i].Type)
                     {
                         case Tile.TileType.Wall:
                             PicBox.BackgroundImage = Properties.Resources.WallTile;
@@ -161,14 +131,42 @@ namespace fpdungeonCrawler.Map
                 }
                 else
                 {
-                    if (tiles[i].entity == player)
+                    if (playerViewRange[i].entity == player)
                     {
                         PicBox.BackgroundImage = ChangePlayerArrowDirection(player);
                     }
-                    else if (tiles[i].entity.isEnemy)
+                    else if (playerViewRange[i].entity.isEnemy)
                     {
-                        PicBox.BackgroundImage = Properties.Resources.OrkIdle1;
+                        if (i < 5)
+                        {
+                            PicBox.BackgroundImage = playerViewRange[i].entity.mapIcon;
+                        }
+                        else
+                        {
+                            PicBox.BackgroundImage = Properties.Resources.FloorTile;
+                        }
                     }
+                }
+            }
+        }
+
+        public void ResetPlayerViewRange()
+        {
+            for (int i = 0; i < playerViewRange.Length; i++)
+            {
+                PictureBox PicBox = pictureboxes[playerViewRange[i].TilePositionX, playerViewRange[i].TilePositionY];
+
+                switch (playerViewRange[i].Type)
+                {
+                    case Tile.TileType.Wall:
+                        PicBox.BackgroundImage = Properties.Resources.WallTile;
+                        break;
+
+                    case Tile.TileType.Floor:
+                        PicBox.BackgroundImage = Properties.Resources.FloorTile;
+                        break;
+                    default:
+                        break;
                 }
             }
         }

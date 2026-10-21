@@ -193,4 +193,28 @@
   <data name="SchattenFlieht" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SchattenFlieht.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="sword1_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sword1_idle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sword2_windup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sword2_windup.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sword3_swing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sword3_swing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sword4_follow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sword4_follow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sword5_recovery" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sword5_recovery.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_Idle1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_Idle1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_Idle2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_Idle2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_Idle3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_Idle3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

@@ -22,6 +22,8 @@ namespace fpdungeonCrawler
 
         public Tile[] View = new Tile[9];
 
+        public bool StateHit;
+
 
         public (int Column, int Row) GetPositionInFront(Player player, int distance)
         {
@@ -69,7 +71,7 @@ namespace fpdungeonCrawler
             return player.PositionBehind;
         }
 
-        public void DoDamage(Player player, Map map, Audiomanager audiomanager)
+        public void DoDamage(Player player, fpdungeonCrawler.Map.Map map, Audiomanager audiomanager)
         {
             Tile tile = map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row];
             if (tile?.entity != null)

@@ -25,10 +25,14 @@ namespace fpdungeonCrawler
             if (!isActive)
             { return; }
 
-            currentFrame++;
-
-            if(currentFrame >= maxFrames)
+            if (currentFrame < maxFrames - 1)
             {
+                currentFrame++;
+            }
+
+            else
+            {
+                currentFrame = 0;
                 isActive = false;
             }
         }
@@ -40,24 +44,24 @@ namespace fpdungeonCrawler
 
             currentTick++;
 
-            if(currentTick < interval)
+            if (currentTick < interval)
             { return; }
 
-            if (currentTick == interval * (currentFrame+1))
+            if (currentTick == interval * (currentFrame + 1))
             {
                 currentFrame++;
             }
 
             if (currentFrame >= maxFrames)
             {
-                currentFrame = 0; 
+                currentFrame = 0;
                 currentTick = 0;
             }
         }
 
         public Image GetCurrentFrameSprite(int currentframe)
         {
-            return frameSprites[currentFrame];            
+            return frameSprites[currentFrame];
         }
     }
 }
