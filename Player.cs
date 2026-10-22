@@ -9,85 +9,27 @@ namespace fpdungeonCrawler
 
     public class Player : Entity
     {
-        public enum PlayerOrientation { Left, Up, Right, Down }
-        public PlayerOrientation orientation = PlayerOrientation.Up;
-
-        public new (int Column, int Row) CurrentPosition { get; set; } = new(1, 7);
-
         public new (int Column, int Row) StartPosition { get; set; } = new(1, 7);
-
-        public (int Column, int Row) PositionInFront { get; set; }
-
-        public (int Column, int Row) PositionBehind { get; set; }
 
         public Tile[] View = new Tile[9];
 
         public bool StateHit;
 
-
-        public (int Column, int Row) GetPositionInFront(Player player, int distance)
+        public Player GeneratePlayer(fpdungeonCrawler.Map.Map map)
         {
-            switch (player.orientation)
-            {
-                case PlayerOrientation.Up:
-                    player.PositionBehind = (CurrentPosition.Column, CurrentPosition.Row - distance);
-                    break;
+            Player player = new Player();
+            Tile tile = new Tile();
+            tile.TilePositionX = player.StartPosition.Column;
+            tile.TilePositionY = player.StartPosition.Row;
+            tile.entity = player;
+            map.mapTiles[player.StartPosition.Column, player.StartPosition.Row] = tile;
+            player.damage = 50;
+            player.orientation = Player.EntityOrientation.Up;
+            player.CurrentPosition = player.StartPosition;
+            player.healthpoints = 100;
 
-                case PlayerOrientation.Down:
-                    player.PositionBehind = (CurrentPosition.Column, CurrentPosition.Row + distance);
-                    break;
-
-                case PlayerOrientation.Left:
-                    player.PositionBehind = (CurrentPosition.Column - distance, CurrentPosition.Row);
-                    break;
-
-                case PlayerOrientation.Right:
-                    player.PositionBehind = (CurrentPosition.Column + distance, CurrentPosition.Row);
-                    break;
-            }
-            return player.PositionBehind;
-        }
-
-        public (int Column, int Row) GetPositionBehind(Player player)
-        {
-            switch (player.orientation)
-            {
-                case PlayerOrientation.Up:
-                    player.PositionBehind = (CurrentPosition.Column, CurrentPosition.Row + 1);
-                    break;
-
-                case PlayerOrientation.Down:
-                    player.PositionBehind = (CurrentPosition.Column, CurrentPosition.Row - 1);
-                    break;
-
-                case PlayerOrientation.Left:
-                    player.PositionBehind = (CurrentPosition.Column + 1, CurrentPosition.Row);
-                    break;
-
-                case PlayerOrientation.Right:
-                    player.PositionBehind = (CurrentPosition.Column - 1, CurrentPosition.Row);
-                    break;
-            }
-            return player.PositionBehind;
-        }
-
-        public void DoDamage(Player player, fpdungeonCrawler.Map.Map map, Audiomanager audiomanager)
-        {
-            Tile tile = map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row];
-            if (tile?.entity != null)
-            {
-                Entity entity;
-                entity = tile.entity;
-                entity.healthpoints -= player.damage;
-
-                audiomanager.PlayAudio(Properties.Resources.weaponWhoosh);
-
-                if (entity.healthpoints <= 0)
-                {
-                    audiomanager.PlayAudio(Properties.Resources.SchattenFlieht);
-                    tile.entity = null;
-                }
-            }
+            player.attackAnimation = AnimationDatabase.swordhit;
+            return player;
         }
 
     }

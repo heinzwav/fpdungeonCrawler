@@ -15,7 +15,7 @@ namespace fpdungeonCrawler
         public Player player = new Player();
 
         UIManager uiManager = new UIManager();
-        DungeonView dungeonView = new DungeonView();
+        public DungeonView dungeonView = new DungeonView();
         CombatRunTime combatRunTime = new CombatRunTime();
 
         HUD hud = new HUD();
@@ -47,7 +47,7 @@ namespace fpdungeonCrawler
 
             //Map Generation
             map.GenerateMap();
-            player = GeneratePlayer();
+            player = player.GeneratePlayer(map);
             map.GenerateMinimapUI();
 
             //Layerinitialisation
@@ -58,7 +58,6 @@ namespace fpdungeonCrawler
             succubus = EnemyDatabase.CreateSuccubus(map);
 
 
-            dungeonView.CreateswordHitAnimation();
             dungeonView.GetPlayerView(player, map);
 
             this.Paint += Form1_Paint;
@@ -82,22 +81,9 @@ namespace fpdungeonCrawler
         //Draw Graphics
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            dungeonView.PaintLayers(e);
+            dungeonView.PaintLayers(e, player);
             uiManager.enemyBar.Draw(dungeonView.entityinFront, e.Graphics, DungeonView.layerEntity);
             combatRunTime.CombatTickIndicator(e, hud.LayerCombatTick);
-        }
-
-        public Player GeneratePlayer()
-        {
-            Player player = new Player();
-            Tile tile = new Tile();
-            tile.TilePositionX = player.StartPosition.Column;
-            tile.TilePositionY = player.StartPosition.Row;
-            tile.entity = player;
-            map.mapTiles[player.StartPosition.Column, player.StartPosition.Row] = tile;
-            player.damage = 50;
-            player.orientation = Player.PlayerOrientation.Up;
-            return player;
         }
 
         public void UpdatePlayerposition()
@@ -149,7 +135,7 @@ namespace fpdungeonCrawler
                 }
                 else
                 {
-                    player.orientation = Player.PlayerOrientation.Left;
+                    player.orientation = Player.EntityOrientation.Left;
                 }
             }
 
@@ -162,7 +148,7 @@ namespace fpdungeonCrawler
                 }
                 else
                 {
-                    player.orientation = Player.PlayerOrientation.Down;
+                    player.orientation = Player.EntityOrientation.Down;
                 }
             }
 
@@ -178,39 +164,15 @@ namespace fpdungeonCrawler
             this.Invalidate();
         }
 
-        public void PlayerAttack()
-        {
-            player.PositionInFront = player.GetPositionInFront(player, 1);
-            if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity is null)
-            {
-                return;
-            }
-            else
-            {
-                audiomanager.PlayAudio(Properties.Resources.weaponWhoosh);
-                player.DoDamage(player, map, audiomanager);
-                dungeonView.dmgAnimation.StartAnimation();
-                dungeonView.swordHit.StartAnimation();
-            }
-        }
-
         private void GameTimerTick(object sender, EventArgs e)
         {
-            Debug.WriteLine(DateTime.Now.ToString("HH:mm:ss.fff"));
             dungeonView.dmgAnimation.Update();
-            dungeonView.swordHit.Update();
+            player.attackAnimation.Update();
             orc.idleAnimation.Loop();
             succubus.idleAnimation.Loop();
             combatRunTime.CombatTick(this);
 
             Invalidate();
-        }
-
-
-        //CombatRoundTimer
-        private void CombatTimerTick()
-        {
-            
         }
 
         private void Form1_Load(object sender, EventArgs e)

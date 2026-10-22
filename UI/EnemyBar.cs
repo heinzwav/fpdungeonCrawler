@@ -22,7 +22,6 @@ namespace fpdungeonCrawler.UI
             barWidth = (int)Math.Round(layer.rec.Width * entity.healthpoints * scaleFactorX);
             barHeight = (int)Math.Round(layer.rec.Height * scaleFactorY);
 
-
             Rectangle rec = new((int)Math.Round(layer.rec.Location.X + locationFactorX * layer.rec.Width), (int)Math.Round(layer.rec.Location.Y - locationFactorY), barWidth, barHeight);
             g.FillRectangle(brush, rec);
         }

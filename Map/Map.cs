@@ -177,18 +177,18 @@ namespace fpdungeonCrawler.Map
 
             switch (player.orientation)
             {
-                case PlayerOrientation.Up:
+                case Entity.EntityOrientation.Up:
                     break;
 
-                case PlayerOrientation.Down:
+                case Entity.EntityOrientation.Down:
                     bmPlayerArrow.RotateFlip(RotateFlipType.Rotate180FlipNone);
                     break;
 
-                case PlayerOrientation.Left:
+                case Entity.EntityOrientation.Left:
                     bmPlayerArrow.RotateFlip(RotateFlipType.Rotate270FlipNone);
                     break;
 
-                case PlayerOrientation.Right:
+                case Entity.EntityOrientation.Right:
                     bmPlayerArrow.RotateFlip(RotateFlipType.Rotate90FlipNone);
                     break;
             }

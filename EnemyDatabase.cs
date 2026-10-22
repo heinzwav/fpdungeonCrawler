@@ -19,21 +19,7 @@ namespace fpdungeonCrawler
                 damage = 30,
                 isEnemy = true,
                 mapIcon = Properties.Resources.Succubus_Idle1,
-                idleAnimation = new Animation()
-                {
-                    frameSprites = new Image[3]
-                    {
-                        Properties.Resources.Succubus_Idle1,
-                        Properties.Resources.Succubus_Idle2,
-                        Properties.Resources.Succubus_Idle3
-                    },
-
-                    interval = 16,
-                    isActive = true,
-                    maxFrames = 3,
-
-
-                },
+                idleAnimation = AnimationDatabase.idleSuccubus
             };
             map.UpdateEntityLocation(succubus);
             return succubus;
@@ -44,26 +30,14 @@ namespace fpdungeonCrawler
         {
             Entity orc = new Entity()
             {
-                CurrentPosition = (1, 4),
-                StartPosition = (1, 4),
+                CurrentPosition = (1, 5),
+                StartPosition = (1, 5),
                 name = "orc",
                 healthpoints = 300,
                 damage = 30,
                 isEnemy = true,
                 mapIcon = Properties.Resources.OrkIdle1,
-                idleAnimation = new Animation()
-                
-                {
-                    frameSprites = new Image[2]
-                    {
-                        Properties.Resources.OrkIdle1,
-                        Properties.Resources.OrkIdle2
-                    },
-
-                    interval = 16,
-                    isActive = true,
-                    maxFrames = 2,
-                },
+                idleAnimation = AnimationDatabase.orcIdle
             };
             map.UpdateEntityLocation(orc);
             return orc;

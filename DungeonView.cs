@@ -56,19 +56,7 @@ namespace fpdungeonCrawler
         //Animations
         public DamageAnimation dmgAnimation = new();
 
-        public Animation swordHit = new();
-        public void CreateswordHitAnimation()
-        {
-            swordHit.frameSprites = new Image[5];
-            swordHit.frameSprites[0] = Properties.Resources.sword1_idle;
-            swordHit.frameSprites[1] = Properties.Resources.sword2_windup;
-            swordHit.frameSprites[2] = Properties.Resources.sword3_swing;
-            swordHit.frameSprites[3] = Properties.Resources.sword4_follow;
-            swordHit.frameSprites[4] = Properties.Resources.sword5_recovery;
-            swordHit.maxFrames = 5;
-            swordHit.interval = 8;
-            swordHit.isActive = false;
-        }
+
         //Update Viewpoint
         private void CheckLayer1(Player player, fpdungeonCrawler.Map.Map map)
         {
@@ -238,7 +226,7 @@ namespace fpdungeonCrawler
 
         public void GetPlayerView(Player player, fpdungeonCrawler.Map.Map map)
         {
-            if (player.orientation == Player.PlayerOrientation.Up)
+            if (player.orientation == Player.EntityOrientation.Up)
             {
                 int k = 0;
                 for (int i = player.CurrentPosition.Row - 2; i <= player.CurrentPosition.Row; i++)
@@ -258,7 +246,7 @@ namespace fpdungeonCrawler
                 }
             }
 
-            else if (player.orientation == Player.PlayerOrientation.Down)
+            else if (player.orientation == Player.EntityOrientation.Down)
             {
                 int k = 0;
                 for (int i = player.CurrentPosition.Row + 2; i >= player.CurrentPosition.Row; i--)
@@ -278,7 +266,7 @@ namespace fpdungeonCrawler
                 }
             }
 
-            else if (player.orientation == Player.PlayerOrientation.Left)
+            else if (player.orientation == Player.EntityOrientation.Left)
             {
                 int k = 0;
                 for (int i = player.CurrentPosition.Column - 2; i <= player.CurrentPosition.Column; i++)
@@ -300,7 +288,7 @@ namespace fpdungeonCrawler
             }
 
 
-            else if (player.orientation == Player.PlayerOrientation.Right)
+            else if (player.orientation == Player.EntityOrientation.Right)
             {
                 int k = 0;
                 for (int i = player.CurrentPosition.Column + 2; i >= player.CurrentPosition.Column; i--)
@@ -321,7 +309,7 @@ namespace fpdungeonCrawler
                 }
             }
         }
-        public void PaintLayers(PaintEventArgs e)
+        public void PaintLayers(PaintEventArgs e, Player player)
         {
             Entity entity = entityinFront;
 
@@ -348,8 +336,7 @@ namespace fpdungeonCrawler
                 layerEntity.rec.Size = new Size(0, 0);
                 layerEntity.rec.Location = new Point(0, 0);
             }
-
-            layerPlayer.img = swordHit.GetCurrentFrameSprite(swordHit.currentFrame);
+            layerPlayer.img = player.attackAnimation.GetCurrentFrameSprite(player.attackAnimation.currentFrame);
             e.Graphics.DrawImage(layerPlayer.img, layerPlayer.rec);
             dmgAnimation.DoDamageAnimation(e.Graphics);
         }

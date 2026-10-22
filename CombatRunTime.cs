@@ -10,7 +10,6 @@ namespace fpdungeonCrawler
         int currentTick = 0;
         public int CoolDowninMilliseconds = 2000;
         public int Interval = 45; //Wie viele Frames
-        int currentRadius = 0;
         int maxRadius = 360;
         
 
@@ -24,7 +23,7 @@ namespace fpdungeonCrawler
 
                 if (form1.player.StateHit)
                 {
-                    form1.PlayerAttack();
+                    form1.player.DoDamage(form1.player, form1.map, form1.audiomanager);
                 }
 
                 currentTick = 0;
