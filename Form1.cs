@@ -83,6 +83,7 @@ namespace fpdungeonCrawler
         {
             dungeonView.PaintLayers(e, player);
             uiManager.enemyBar.Draw(dungeonView.entityinFront, e.Graphics, DungeonView.layerEntity);
+            uiManager.playerhud.Draw(player, e.Graphics, DungeonView.layerPlayer);
             combatRunTime.CombatTickIndicator(e, hud.LayerCombatTick);
         }
 
@@ -99,6 +100,7 @@ namespace fpdungeonCrawler
         }
 
 
+        //Player Movement || Key Actions
         private void Playermovements(object sender, System.Windows.Forms.KeyEventArgs e)
         {
             if (e.KeyCode == Keys.W)
@@ -108,7 +110,7 @@ namespace fpdungeonCrawler
                 {
                     return;
                 }
-                if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity is not null)
+                if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity is not null && map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity!.healthpoints > 0)
                 {
                     return;
                 }
@@ -168,8 +170,9 @@ namespace fpdungeonCrawler
         {
             dungeonView.dmgAnimation.Update();
             player.attackAnimation.Update();
-            orc.idleAnimation.Loop();
-            succubus.idleAnimation.Loop();
+
+            orc.activeAnimation.Update();
+            succubus.activeAnimation.Update();
             combatRunTime.CombatTick(this);
 
             Invalidate();

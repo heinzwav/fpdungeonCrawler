@@ -6,6 +6,7 @@ namespace fpdungeonCrawler
 {
     public class Animation
     {
+        public bool loop;
         public int interval;
         public int currentTick = 0;
         public int currentFrame = 0;
@@ -22,19 +23,34 @@ namespace fpdungeonCrawler
 
         public void Update()
         {
-            if (!isActive)
-            { return; }
-
-            if (currentFrame < maxFrames - 1)
+            if (!loop)
             {
-                currentFrame++;
+                if (!isActive)
+                { return; }
+
+                currentTick++;
+
+                if (currentTick < interval)
+                { return; }
+
+                if (currentTick == interval * (currentFrame + 1))
+                {
+                    currentFrame++;
+                }
+
+                if (currentFrame >= maxFrames)
+                {
+                    currentFrame = 0;
+                    currentTick = 0;
+                    isActive = false;
+                }
             }
 
             else
             {
-                currentFrame = 0;
-                isActive = false;
+                Loop();
             }
+
         }
 
         public void Loop()

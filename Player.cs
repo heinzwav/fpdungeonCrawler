@@ -1,4 +1,5 @@
 ﻿using fpdungeonCrawler.Map;
+using fpdungeonCrawler.UI;
 using System;
 using System.Collections.Generic;
 using System.Media;
@@ -14,6 +15,7 @@ namespace fpdungeonCrawler
         public Tile[] View = new Tile[9];
 
         public bool StateHit;
+        
 
         public Player GeneratePlayer(fpdungeonCrawler.Map.Map map)
         {
@@ -23,10 +25,11 @@ namespace fpdungeonCrawler
             tile.TilePositionY = player.StartPosition.Row;
             tile.entity = player;
             map.mapTiles[player.StartPosition.Column, player.StartPosition.Row] = tile;
-            player.damage = 50;
+            player.baseDamage = 100;
             player.orientation = Player.EntityOrientation.Up;
             player.CurrentPosition = player.StartPosition;
             player.healthpoints = 100;
+            player.EquippedWeapon = ItemDatabase.Sword;
 
             player.attackAnimation = AnimationDatabase.swordhit;
             return player;

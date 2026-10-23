@@ -134,10 +134,10 @@
     <value>..\Resources\Ork_Idle.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OrkIdle1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OrkIdle1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\orc_idle1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="OrkIdle2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\OrkIdle2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\orc_idle2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Layer1_L" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Layer1_L.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -209,12 +209,81 @@
     <value>..\Resources\sword5_recovery.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Succubus_Idle1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Succubus_Idle1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Succubus_idle1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Succubus_Idle2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Succubus_Idle2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Succubus_idle2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Succubus_Idle3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Succubus_Idle3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <value>..\Resources\Succubus_idle3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_1_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_attack1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_2_windup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_attack2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_3_swing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_attack3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_4_followthrough" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_attack4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_5_recovery" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_attack5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_death_1_hit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_death1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_death_2_stagger" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_death2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_death_3_fall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_death3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_death_4_falling_back" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_death4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_death_5_airborne" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_death5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="orc_death_6_lying" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\orc_death6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_idle4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_idle4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_attack1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_attack1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_attack2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_attack2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_attack3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_attack3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_attack4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_attack4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_death1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_death1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_death2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_death2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_death3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_death3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_death4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_death4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_death5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_death5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_death6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_death6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Succubus_death7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Succubus_death7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -7,5 +7,6 @@ namespace fpdungeonCrawler.UI
     internal class UIManager
     {
         public EnemyBar enemyBar = new();
+        public PlayerHUD playerhud = new();
     }
 }

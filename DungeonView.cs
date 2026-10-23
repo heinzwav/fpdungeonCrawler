@@ -28,7 +28,7 @@ namespace fpdungeonCrawler
 
         //Entity Layer
         public static Layer layerEntity = new();
-        public Size layerEntitySize = new Size(408, 406);
+        public Size layerEntitySize = new Size(430, 440);
         public Point layerEntityLocation = new Point(190, 150);
 
         //Player Layer
@@ -328,7 +328,11 @@ namespace fpdungeonCrawler
 
             if (entityinSight)
             {
-                layerEntity.img = entity.idleAnimation.GetCurrentFrameSprite(entity.idleAnimation.currentFrame);
+                layerEntity.img = entity.activeAnimation.GetCurrentFrameSprite(entity.activeAnimation.currentFrame);
+                if (!entity.activeAnimation.isActive && entity.activeAnimation == entity.deathAnimation)
+                {
+                    layerEntity.img = entity.activeAnimation.frameSprites[entity.activeAnimation.maxFrames-1];
+                }
                 e.Graphics.DrawImage(layerEntity.img, layerEntity.rec);
             }
             else if (entityinSight == false)

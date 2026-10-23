@@ -13,7 +13,8 @@ namespace fpdungeonCrawler
         public EntityOrientation orientation = EntityOrientation.Up;
         public TableLayoutPanelCellPosition currentPos;
         public int healthpoints { get; set; }
-        public int damage { get; set; }
+        public int baseDamage { get; set; }
+        public Weapon EquippedWeapon { get; set; }
 
         public bool isEnemy { get; set; }
 
@@ -28,6 +29,11 @@ namespace fpdungeonCrawler
         public string name { get; set; }
         public Animation idleAnimation { get; set; }
         public Animation attackAnimation { get; set; }
+        public Animation deathAnimation { get; set; }
+        public Animation activeAnimation { get; set; }
+        //public Animation[] animations = new Animation[3];
+
+
 
         public Image mapIcon { get; set; }
 
@@ -40,7 +46,7 @@ namespace fpdungeonCrawler
             {
                 Entity entity;
                 entity = tile.entity;
-                entity.healthpoints -= actor.damage;
+                entity.healthpoints -= actor.baseDamage + actor.EquippedWeapon.damageValue;
                 actor.attackAnimation.StartAnimation();
 
                 audiomanager.PlayAudio(Properties.Resources.weaponWhoosh);
@@ -48,8 +54,10 @@ namespace fpdungeonCrawler
 
                 if (entity.healthpoints <= 0)
                 {
+                    entity.activeAnimation.isActive = false;
+                    entity.activeAnimation = entity.deathAnimation;
+                    entity.activeAnimation.StartAnimation();
                     audiomanager.PlayAudio(Properties.Resources.SchattenFlieht);
-                    tile.entity = null;
                 }
             }
         }
@@ -106,22 +114,6 @@ namespace fpdungeonCrawler
             return entity.PositionBehind;
         }
 
-
-        //public void Attack(Entity entity)
-        //{
-        //    entity.PositionInFront = entity.GetPositionInFront(entity, 1);
-        //    if (map.mapTiles[entity.PositionInFront.Column, entity.PositionInFront.Row].entity is null)
-        //    {
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        audiomanager.PlayAudio(Properties.Resources.weaponWhoosh);
-        //        entity.DoDamage(entity, map, audiomanager);
-        //        dungeonView.dmgAnimation.StartAnimation();
-        //        dungeonView.swordHit.StartAnimation();
-        //    }
-        //}
     
     }
 
