@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Text;
 using System.Formats.Asn1;
 using System.Numerics;
@@ -131,7 +132,7 @@ namespace fpdungeonCrawler.Map
                 }
                 else
                 {
-                    if (playerViewRange[i].entity == player)
+                    if (playerViewRange[i].player == player)
                     {
                         PicBox.BackgroundImage = ChangePlayerArrowDirection(player);
                     }
@@ -228,10 +229,16 @@ namespace fpdungeonCrawler.Map
         public void UpdateEntityLocation(Entity entity)
         {
             foreach (Tile tile in mapTiles)
-            {
-                if (tile.TilePositionX == entity.CurrentPosition.Column & tile.TilePositionY == entity.CurrentPosition.Row)
+            {                
+                if (tile.TilePositionX == entity.CurrentPosition.Column && tile.TilePositionY == entity.CurrentPosition.Row && entity is Player)
+                {
+                    tile.player = entity;
+                    Debug.WriteLine(tile.player.CurrentPosition.ToString);
+                }
+                else if (tile.TilePositionX == entity.CurrentPosition.Column && tile.TilePositionY == entity.CurrentPosition.Row)
                 {
                     tile.entity = entity;
+                    Debug.WriteLine(tile.entity.CurrentPosition.ToString);
                 }
             }
         }

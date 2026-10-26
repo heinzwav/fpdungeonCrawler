@@ -31,6 +31,7 @@ namespace fpdungeonCrawler
         //ORC//
         public static Entity CreateOrc(fpdungeonCrawler.Map.Map map)
         {
+            //Animations/DeathAnimation/Suc
             Entity orc = new Entity()
             {
                 CurrentPosition = (1, 5),

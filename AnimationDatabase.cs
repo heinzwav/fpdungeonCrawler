@@ -24,6 +24,11 @@ namespace fpdungeonCrawler
             isActive = false
         };
 
+      
+
+
+
+
 
         //Orc Animations
         public static Animation orcIdle = new()

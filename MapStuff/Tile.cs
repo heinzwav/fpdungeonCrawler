@@ -7,6 +7,7 @@ namespace fpdungeonCrawler.Map
     public class Tile
     {
         public Entity? entity { get; set; }
+        public Entity? player { get; set; }
         public enum TileType : int { Wall = 1, Floor = 0 }
         public TileType Type { get; set; }
 
@@ -19,21 +20,5 @@ namespace fpdungeonCrawler.Map
         public PictureBox PicBox;
 
         public bool isWall;
-
-
-        //public Tile AddTile(Map map)
-        //{
-        //    Tile tile = map.mapTiles.
-        //    if (tile.TilePositionX < 0 || tile.TilePositionX > map.SizeX || tile.TilePositionY < 0 || tile.TilePositionY > map.SizeY)
-        //    {
-        //        Tile replacementtile = new();
-        //        return replacementtile;
-        //    }
-        //    else
-        //    {
-        //        return 
-        //    }
-
-        //}
     }
 }

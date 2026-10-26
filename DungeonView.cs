@@ -275,7 +275,7 @@ namespace fpdungeonCrawler
                     {
                         if (i < 0 || j < 0 || i > 9 || j > 9)
                         {
-                            entityinSight = false;
+                            //entityinSight = false;
                             k++;
                         }
                         else

@@ -10,20 +10,21 @@ namespace fpdungeonCrawler
 
     public class Player : Entity
     {
-        public new (int Column, int Row) StartPosition { get; set; } = new(1, 7);
+        public new (int Column, int Row) 
+            StartPosition { get; set; } = new(1, 7);
 
         public Tile[] View = new Tile[9];
 
         public bool StateHit;
-        
 
+      
         public Player GeneratePlayer(fpdungeonCrawler.Map.Map map)
         {
             Player player = new Player();
             Tile tile = new Tile();
             tile.TilePositionX = player.StartPosition.Column;
             tile.TilePositionY = player.StartPosition.Row;
-            tile.entity = player;
+            tile.player = player;
             map.mapTiles[player.StartPosition.Column, player.StartPosition.Row] = tile;
             player.baseDamage = 100;
             player.orientation = Player.EntityOrientation.Up;
