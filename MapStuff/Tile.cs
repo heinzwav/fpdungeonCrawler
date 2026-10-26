@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Text;
 
 namespace fpdungeonCrawler.Map
@@ -20,5 +21,6 @@ namespace fpdungeonCrawler.Map
         public PictureBox PicBox;
 
         public bool isWall;
+        public bool isVisited;
     }
 }
