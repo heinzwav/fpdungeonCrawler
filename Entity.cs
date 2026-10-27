@@ -17,6 +17,7 @@ namespace fpdungeonCrawler
         public Weapon EquippedWeapon { get; set; }
 
         public bool isEnemy { get; set; }
+        public bool isVisible { get; set; }
 
         public (int Column, int Row) CurrentPosition { get; set; }
 

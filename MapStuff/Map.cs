@@ -222,7 +222,7 @@ namespace fpdungeonCrawler.Map
 
 
         //Procedural PathGeneration
-        public void GeneratePaths()
+        public void GeneratePaths()                     //Random Path/Floor Generation Method
         {
             int currentTileX = StartPosition.X;
             int currentTileY = StartPosition.Y;
@@ -230,8 +230,12 @@ namespace fpdungeonCrawler.Map
 
             while (!FloorGenerated)
             {
-                List<Tile> tiles = new List<Tile>();
-                GenerateFloor(currentTileX, currentTileY);
+                List<Tile> validTiles = new List<Tile>();
+
+                if (mapTiles[currentTileX, currentTileY].Type != Tile.TileType.Floor)
+                {
+                    GenerateFloor(currentTileX, currentTileY);
+                }
 
                 //Check 2 Tiles above StartTile and Keep Dungeon Border as Wall
                 if (currentTileY - 2 > 0)
@@ -240,7 +244,7 @@ namespace fpdungeonCrawler.Map
 
                     if (!tile.isVisited)
                     {
-                        tiles.Add(tile);
+                        validTiles.Add(tile);
                     }
                 }
 
@@ -251,7 +255,7 @@ namespace fpdungeonCrawler.Map
 
                     if (!tile.isVisited)
                     {
-                        tiles.Add(tile);
+                        validTiles.Add(tile);
                     }
                 }
 
@@ -263,7 +267,7 @@ namespace fpdungeonCrawler.Map
 
                     if (!tile.isVisited)
                     {
-                        tiles.Add(tile);
+                        validTiles.Add(tile);
                     }
                 }
 
@@ -275,16 +279,21 @@ namespace fpdungeonCrawler.Map
 
                     if (!tile.isVisited)
                     {
-                        tiles.Add(tile);
+                        validTiles.Add(tile);
                     }
                 }
 
-
-                if (tiles.Count <= 0)
+                //If no valid tile can be found, look at the last chosenTile that worked and try to find one there
+                if (validTiles.Count <= 0)
                 {
-                    if(chosenTiles.Count > 0)
+                    if (chosenTiles.Count > 0)
                     {
                         chosenTiles.RemoveAt(chosenTiles.Count - 1);
+                        if (chosenTiles.Count == 0)
+                        {
+                            FloorGenerated = true;
+                            return;
+                        }
                         currentTileX = chosenTiles[chosenTiles.Count - 1].TilePositionX;
                         currentTileY = chosenTiles[chosenTiles.Count - 1].TilePositionY;
                         continue;
@@ -295,41 +304,49 @@ namespace fpdungeonCrawler.Map
                         return;
                     }
                 }
-                int i = new Random().Next(tiles.Count);
+                int i = new Random().Next(validTiles.Count);
 
-                //Set chosen Tile as Floor Type
-                Tile chosenTile = tiles[i];
+                //Choose a random tile from the valid tiles List, and add it to the chosenTiles list, then generate a Floor on this Tile
+                Tile chosenTile = validTiles[i];
+                chosenTile.isVisited = true;
                 chosenTiles.Add(chosenTile);
-                GenerateFloor(chosenTile.TilePositionX, chosenTile.TilePositionY);
 
-                //Set Tile between StartTile and chosenTile as Floor Type
+                //Set Tile between StartTile and chosenTile as floor type
+                Tile tileBetween = new();
+
                 if (chosenTile.TilePositionX < currentTileX)
                 {
-                    GenerateFloor(chosenTile.TilePositionX + 1, chosenTile.TilePositionY);
+                    tileBetween.TilePositionX = chosenTile.TilePositionX + 1;
+                    tileBetween.TilePositionY = chosenTile.TilePositionY;
                 }
 
                 if (chosenTile.TilePositionX > currentTileX)
                 {
-                    GenerateFloor(chosenTile.TilePositionX - 1, chosenTile.TilePositionY);
+                    tileBetween.TilePositionX = chosenTile.TilePositionX - 1;
+                    tileBetween.TilePositionY = chosenTile.TilePositionY;
                 }
 
                 if (chosenTile.TilePositionY < currentTileY)
                 {
-                    GenerateFloor(chosenTile.TilePositionX, chosenTile.TilePositionY + 1);
+                    tileBetween.TilePositionX = chosenTile.TilePositionX;
+                    tileBetween.TilePositionY = chosenTile.TilePositionY + 1;
                 }
 
                 if (chosenTile.TilePositionY > currentTileY)
                 {
-                    GenerateFloor(chosenTile.TilePositionX, chosenTile.TilePositionY - 1);
+                    tileBetween.TilePositionX = chosenTile.TilePositionX;
+                    tileBetween.TilePositionY = chosenTile.TilePositionY - 1;
                 }
+                tileBetween.isVisited = true;
+                GenerateFloor(tileBetween.TilePositionX, tileBetween.TilePositionY);
 
-                currentTileX = chosenTiles[chosenTiles.Count -1].TilePositionX;
+                //Set chosenTile as currentTile so that it will be generated as Floor in next loop
+                currentTileX = chosenTiles[chosenTiles.Count - 1].TilePositionX;
                 currentTileY = chosenTiles[chosenTiles.Count - 1].TilePositionY;
             }
-
         }
 
-
+        //Create a Tile of floor type
         public void GenerateFloor(int col, int row)
         {
             Tile tile = new Tile();
@@ -342,6 +359,42 @@ namespace fpdungeonCrawler.Map
         }
 
 
+        //Get Area of the Map by entering Position & Range
+        public List<Tile> CheckMapArea(int PositionX, int PositionY, int width, int height)
+        {
+            List<Tile> tiles = new List<Tile>();
+
+            for (int i = PositionY; i < PositionY + height; i++)
+            {
+                for (int j = PositionX; j < PositionX + width; j++)
+                {
+                    if (i < 0 || j < 0 || i > SizeX - 1 || j > SizeY - 1)
+                    {
+                        Debug.WriteLine("ERROR - Invalid Map Area Check");
+                    }
+                    else
+                    {
+                        tiles.Add(mapTiles[j, i]);
+                    }
+                }
+            }
+            return tiles;
+        }
+
+        public List<Tile> GetFloorTiles()
+        {
+            List<Tile> floortiles = new List<Tile>();
+            foreach (Tile tile in mapTiles)
+            {
+                if (tile.Type == Tile.TileType.Floor)
+                {
+                    floortiles.Add(tile);
+                }
+            }
+            return floortiles;
+        }
+
+        //Update the location of the entity
         public void UpdateEntityLocation(Entity entity)
         {
             foreach (Tile tile in mapTiles)
@@ -360,5 +413,53 @@ namespace fpdungeonCrawler.Map
         }
 
 
+        //Spawn Enemies
+
+        public void SpawnEnemies()
+        {
+            List<Tile> floortiles = GetFloorTiles();
+            //Don't spawn Enemies near StartPoint of Player
+            List<Tile> invalidTiles = CheckMapArea(0, 0, 3, 3);
+
+            Random random = new Random();
+
+            bool enemySpawnFinished = false;
+            int maxEnemyNumber = 2;
+
+            while (!enemySpawnFinished)
+            {
+                
+                foreach (Tile t in invalidTiles)
+                {
+                    t.invalidFloorPosition = true;
+                }
+
+                if(invalidTiles.Count >= floortiles.Count)
+                {
+                    enemySpawnFinished = true;
+                    break;
+                }
+
+                int rndNumber = random.Next(floortiles.Count);
+                Tile randomTile = floortiles[rndNumber];
+
+                if (!randomTile.invalidFloorPosition)
+                {
+                    rndNumber = random.Next(EnemyDatabase.EnemyCreators.Count);     //Generate random number based on Enemytypes
+                    Entity newEnemy = EnemyDatabase.EnemyCreators[rndNumber](this, randomTile.TilePositionX, randomTile.TilePositionY);
+
+                    //Add Tiles around Enemy to InvalidTiles List
+                    List<Tile> newInvalidTiles = CheckMapArea(randomTile.TilePositionX - 1, randomTile.TilePositionY - 1, 3, 3);
+                    
+                    foreach(Tile t in newInvalidTiles)
+                    {
+                        if (!invalidTiles.Contains(t))
+                        {
+                            invalidTiles.Add(t);
+                        }
+                    }                    
+                }
+            }
+        }
     }
 }

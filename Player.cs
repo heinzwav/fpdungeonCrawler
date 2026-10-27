@@ -11,7 +11,7 @@ namespace fpdungeonCrawler
     public class Player : Entity
     {
         public new (int Column, int Row) 
-            StartPosition { get; set; } = new(1, 7);
+            StartPosition { get; set; } = new(1, 1);
 
         public Tile[] View = new Tile[9];
 
@@ -27,7 +27,7 @@ namespace fpdungeonCrawler
             tile.player = player;
             map.mapTiles[player.StartPosition.Column, player.StartPosition.Row] = tile;
             player.baseDamage = 100;
-            player.orientation = Player.EntityOrientation.Up;
+            player.orientation = Player.EntityOrientation.Right;
             player.CurrentPosition = player.StartPosition;
             player.healthpoints = 100;
             player.EquippedWeapon = ItemDatabase.Sword;

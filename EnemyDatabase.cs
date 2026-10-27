@@ -3,17 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace fpdungeonCrawler
+namespace fpdungeonCrawler.Map
 {
     public static class EnemyDatabase
     {
+        public static List<Func<Map, int, int, Entity>> EnemyCreators = new()
+        {
+            CreateSuccubus,
+            CreateOrc
+        };
         //SUCCUBUS//
-        public static Entity CreateSuccubus(fpdungeonCrawler.Map.Map map)
+        public static Entity CreateSuccubus(Map map, int PositionX, int PositionY)
         {
             Entity succubus = new Entity()
             {
-                CurrentPosition = (4,5),
-                StartPosition = (4,5),
+                CurrentPosition = (PositionX,PositionY),
+                StartPosition = (PositionX,PositionY),
                 name = "Succubus",
                 healthpoints = 300,
                 baseDamage = 4,
@@ -29,13 +34,13 @@ namespace fpdungeonCrawler
         }
 
         //ORC//
-        public static Entity CreateOrc(fpdungeonCrawler.Map.Map map)
+        public static Entity CreateOrc(Map map, int PositionX, int PositionY)
         {
             //Animations/DeathAnimation/Suc
             Entity orc = new Entity()
             {
-                CurrentPosition = (1, 5),
-                StartPosition = (1, 5),
+                CurrentPosition = (PositionX, PositionY),
+                StartPosition = (PositionX, PositionY),
                 name = "orc",
                 healthpoints = 300,
                 baseDamage = 2,

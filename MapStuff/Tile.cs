@@ -22,5 +22,6 @@ namespace fpdungeonCrawler.Map
 
         public bool isWall;
         public bool isVisited;
+        public bool invalidFloorPosition;
     }
 }

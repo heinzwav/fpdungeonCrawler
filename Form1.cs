@@ -58,9 +58,10 @@ namespace fpdungeonCrawler
             //Layerinitialisation
             dungeonView.Initialize();
 
+            map.SpawnEnemies();
             //EntityGeneration
-            entities.Add(succubus = EnemyDatabase.CreateSuccubus(map));
-            entities.Add(orc = EnemyDatabase.CreateOrc(map));
+            ////////////entities.Add(succubus = EnemyDatabase.CreateSuccubus(map));
+            ////////////entities.Add(orc = EnemyDatabase.CreateOrc(map));
 
 
             dungeonView.GetPlayerView(player, map);
@@ -182,8 +183,11 @@ namespace fpdungeonCrawler
             dungeonView.dmgAnimation.Update();
             player.attackAnimation.Update();
 
-            orc.activeAnimation.Update();
-            succubus.activeAnimation.Update();
+            if (dungeonView.entityinSight)
+            {
+                dungeonView.entityinFront.activeAnimation.Update();
+
+            }
             combatRunTime.CombatTick(this);
 
             Invalidate();
