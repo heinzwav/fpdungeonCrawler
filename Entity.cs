@@ -32,7 +32,6 @@ namespace fpdungeonCrawler
         public Animation attackAnimation { get; set; }
         public Animation deathAnimation { get; set; }
         public Animation activeAnimation { get; set; }
-        //public Animation[] animations = new Animation[3];
 
 
 
@@ -74,22 +73,22 @@ namespace fpdungeonCrawler
             switch (entity.orientation)
             {
                 case EntityOrientation.Up:
-                    entity.PositionBehind = (entity.CurrentPosition.Column, entity.CurrentPosition.Row - distance);
+                    entity.PositionInFront = (entity.CurrentPosition.Column, entity.CurrentPosition.Row - distance);
                     break;
 
                 case EntityOrientation.Down:
-                    entity.PositionBehind = (entity.CurrentPosition.Column, entity.CurrentPosition.Row + distance);
+                    entity.PositionInFront = (entity.CurrentPosition.Column, entity.CurrentPosition.Row + distance);
                     break;
 
                 case EntityOrientation.Left:
-                    entity.PositionBehind = (entity.CurrentPosition.Column - distance, entity.CurrentPosition.Row);
+                    entity.PositionInFront = (entity.CurrentPosition.Column - distance, entity.CurrentPosition.Row);
                     break;
 
                 case EntityOrientation.Right:
-                    entity.PositionBehind = (entity.CurrentPosition.Column + distance, entity.CurrentPosition.Row);
+                    entity.PositionInFront = (entity.CurrentPosition.Column + distance, entity.CurrentPosition.Row);
                     break;
             }
-            return entity.PositionBehind;
+            return entity.PositionInFront;
         }
 
         public (int Column, int Row) GetPositionBehind(Entity entity)

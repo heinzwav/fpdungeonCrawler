@@ -87,7 +87,7 @@ namespace fpdungeonCrawler
         //Draw Graphics
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            dungeonView.PaintLayers(e, player);
+            dungeonView.PaintLayers(e, player, map);
 
             if (dungeonView.entityinSight)
             {

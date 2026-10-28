@@ -46,6 +46,7 @@ namespace fpdungeonCrawler
 
         public void EnemyAttackCheck(Form1 form1)
         {
+            form1.player.GetPositionInFront(form1.player, 1);
             if(form1.map.mapTiles[form1.player.PositionInFront.Column, form1.player.PositionInFront.Row].entity != null)
             {
                 Entity entity = form1.map.mapTiles[form1.player.PositionInFront.Column, form1.player.PositionInFront.Row].entity!;

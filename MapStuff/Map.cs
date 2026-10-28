@@ -137,11 +137,7 @@ namespace fpdungeonCrawler.Map
                 }
                 else
                 {
-                    if (playerViewRange[i].player == player)
-                    {
-                        PicBox.BackgroundImage = ChangePlayerArrowDirection(player);
-                    }
-                    else if (playerViewRange[i].entity.isEnemy)
+                    if (playerViewRange[i].entity.isEnemy)
                     {
                         if (i < 5)
                         {
@@ -152,6 +148,10 @@ namespace fpdungeonCrawler.Map
                             PicBox.BackgroundImage = Properties.Resources.FloorTile;
                         }
                     }
+                }
+                if (playerViewRange[i].player == player)
+                {
+                    PicBox.BackgroundImage = ChangePlayerArrowDirection(player);
                 }
             }
         }
@@ -200,25 +200,6 @@ namespace fpdungeonCrawler.Map
             }
             return bmPlayerArrow;
         }
-
-        //Generiert Hardcoded Paths
-        //
-        //public void GeneratePaths()
-        //{
-        //    for (int i = 3; i < 9; i++)
-        //    {
-        //        GenerateFloor(1, i);
-        //    }
-
-        //    for (int i = 2; i < 8; i++)
-        //    {
-        //        GenerateFloor(i, 5);
-        //    }
-        //    for (int i = 4; i < 9; i++)
-        //    {
-        //        GenerateFloor(6, i);
-        //    }
-        //}
 
 
         //Procedural PathGeneration
@@ -337,7 +318,7 @@ namespace fpdungeonCrawler.Map
                     tileBetween.TilePositionX = chosenTile.TilePositionX;
                     tileBetween.TilePositionY = chosenTile.TilePositionY - 1;
                 }
-                tileBetween.isVisited = true;
+
                 GenerateFloor(tileBetween.TilePositionX, tileBetween.TilePositionY);
 
                 //Set chosenTile as currentTile so that it will be generated as Floor in next loop
@@ -459,6 +440,18 @@ namespace fpdungeonCrawler.Map
                         }
                     }                    
                 }
+            }
+        }
+
+        public bool CheckIfInBounds(int Column, int Row)
+        {
+            if (Column > SizeX -1 || Column < 0 || Row > SizeY -1 || Row < 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
     }

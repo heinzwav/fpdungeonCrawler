@@ -103,17 +103,6 @@ namespace fpdungeonCrawler
             {
                 layer1.img = Properties.Resources.Layer1_Wall;
             }
-
-            if (tilesLayer1[1].entity is null)
-            {
-                entityinSight = false;
-            }
-            else
-            {
-                entityinSight = true;
-                entityinFront = tilesLayer1[1].entity;
-                SetRecEntitySize(2);
-            }
         }
 
         private void CheckLayer2(Player player, fpdungeonCrawler.Map.Map map)
@@ -155,27 +144,6 @@ namespace fpdungeonCrawler
             {
                 layer2.img = Properties.Resources.Layer2_Wall;
                 layer1.isVisible = false;
-            }
-
-
-            //Check if Entity is in Front
-
-            if (tilesLayer1[1].entity is not null)
-            {
-                entityinSight = true;
-                SetRecEntitySize(2);
-            }
-
-            else if (tilesLayer2[1].entity is null && tilesLayer1[1].entity is null)
-            {
-                entityinSight = false;
-            }
-
-            else
-            {
-                entityinSight = true;
-                entityinFront = tilesLayer2[1].entity;
-                SetRecEntitySize(1);
             }
         }
 
@@ -221,7 +189,7 @@ namespace fpdungeonCrawler
             CheckLayer1(player, map);
             CheckLayer2(player, map);
             CheckLayer3(player, map);
-            Check3TilesInFront(player, map);
+            //Check3TilesInFront(player, map);
         }
 
         public void GetPlayerView(Player player, fpdungeonCrawler.Map.Map map)
@@ -309,8 +277,9 @@ namespace fpdungeonCrawler
                 }
             }
         }
-        public void PaintLayers(PaintEventArgs e, Player player)
+        public void PaintLayers(PaintEventArgs e, Player player, fpdungeonCrawler.Map.Map map)
         {
+            entityinFront = GetAnyEnemyInFront(map, player);
             Entity entity = entityinFront;
 
             layers[0] = layer3;
@@ -364,26 +333,66 @@ namespace fpdungeonCrawler
             }
         }
 
-        private void Check3TilesInFront(Player player, fpdungeonCrawler.Map.Map map)
+        //private void Check3TilesInFront(Player player, fpdungeonCrawler.Map.Map map)
+        //{
+        //    if (player.GetPositionInFront(player, 3).Column < 0 || player.GetPositionInFront(player, 3).Column > 9 ||
+        //        player.GetPositionInFront(player, 3).Row < 0 || player.GetPositionInFront(player, 3).Row > 9)
+        //    {
+        //        return;
+        //    }
+
+        //    Tile tile = map.mapTiles[player.GetPositionInFront(player, 3).Column, player.GetPositionInFront(player, 3).Row];
+
+        //    switch (tile.entity)
+        //    {
+        //        case null:
+        //            break;
+        //        case not null:
+        //            SetRecEntitySize(3);
+        //            entityinSight = true;
+        //            entityinFront = tile.entity;
+        //            break;
+        //    }
+        //}
+
+        public Entity GetAnyEnemyInFront(fpdungeonCrawler.Map.Map map, Player player)
         {
-            if (player.GetPositionInFront(player, 3).Column < 0 || player.GetPositionInFront(player, 3).Column > 9 ||
-                player.GetPositionInFront(player, 3).Row < 0 || player.GetPositionInFront(player, 3).Row > 9)
+            int viewDistance = 3;
+            int closestEntityDistance = 0;
+            Entity entity;
+
+            for(int i = viewDistance; i >= 1; i--)
             {
-                return;
+                int X = player.GetPositionInFront(player, i).Column;
+                int Y = player.GetPositionInFront(player, i).Row;
+
+                if (map.CheckIfInBounds(X, Y))
+                {
+                    Tile tile = map.mapTiles[X, Y];
+                    if (tile.entity != null)
+                    {
+                        closestEntityDistance = i;
+                    }
+                    if (tile.isWall || tile.Type == Tile.TileType.Wall)
+                    {
+                        closestEntityDistance = 0;
+                    }
+                }                
             }
 
-            Tile tile = map.mapTiles[player.GetPositionInFront(player, 3).Column, player.GetPositionInFront(player, 3).Row];
-
-            switch (tile.entity)
+            if (closestEntityDistance !> 0)
             {
-                case null:
-                    break;
-                case not null:
-                    SetRecEntitySize(3);
-                    entityinSight = true;
-                    entityinFront = tile.entity;
-                    break;
+                entity = map.mapTiles[player.GetPositionInFront(player, closestEntityDistance).Column, player.GetPositionInFront(player, closestEntityDistance).Row].entity;
+                entityinSight = true;
+                SetRecEntitySize(closestEntityDistance);
+                return entity;
             }
+            else
+            {
+                entity = null;
+                entityinSight = false;
+                return entity;
+            }            
         }
     }
 }
