@@ -7,13 +7,14 @@ namespace fpdungeonCrawler.UI
 {
     public class EnemyBar
     {
-        public int barHeight;
-        public int barWidth;
+        private int barHeight;
+        private int barWidth;
 
-        public double scaleFactorX = 0.0025;
-        public double scaleFactorY = 0.05;
-        public double locationFactorX = 0.2;
-        public double locationFactorY = 20;
+        private double scaleFactorX = 0.0025;
+        private double scaleFactorY = 0.05;
+        private double locationFactorX = 0.2;
+        private double locationFactorY = 20;
+
 
         SolidBrush brush = new(Color.Red);
         System.Drawing.Font drawFont = new System.Drawing.Font("Arial", 12);

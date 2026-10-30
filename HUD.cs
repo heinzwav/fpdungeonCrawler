@@ -6,7 +6,7 @@ namespace fpdungeonCrawler
 {
     public class HUD
     {
-        public Layer LayerCombatTick = new()
+        public Layer LayerCombatTicker = new()
         {
             rec = new Rectangle()
             {

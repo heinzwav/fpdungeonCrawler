@@ -15,47 +15,59 @@ namespace fpdungeonCrawler.Map
 {
     public class Map
     {
-        public int SizeX = 10;
-        public int SizeY = 10;
+        public int sizeX = 15;
+        public int sizeY = 15;
 
-        public Tile[,] mapTiles = new Tile[10, 10];
-        public PictureBox[,] pictureboxes = new PictureBox[10, 10];
+        public Tile[,] mapTiles;
+        public PictureBox[,] minimapIcons;
         public TableLayoutPanel minimap = new();
 
         private (int X, int Y) StartPosition = (1, 1);
+        private (int X, int Y) EndPosition;
         private bool FloorGenerated;
 
-        Tile[] playerViewRange = new Tile[6];
+        Tile[] playerViewRange = new Tile[6];       //Player can view the tile behind and the 4 tiles in front
         private bool FirstStartUp = true;
 
         TableLayoutPanelCellPosition[] PlayerViewTiles = new TableLayoutPanelCellPosition[9];
 
+        public Map()
+        {
+            minimapIcons = new PictureBox[sizeX, sizeY];
+        }
 
-        //Generiert eine Map mit SizeX * SizeY die zunächst nur aus Walls besteht.
-        //
+        
+        //Generates a map of sizeX & sizeY purely of wall tiles
+        //=> Generates floor tiles
+        //=> Generates transition stairs to next level
         public void GenerateMap()
         {
-            for (int i = 0; i < SizeX; i++)
+            mapTiles = new Tile[sizeX, sizeY];
+            for (int i = 0; i < sizeX; i++)
             {
-                for (int j = 0; j < SizeY; j++)
+                for (int j = 0; j < sizeY; j++)
                 {
                     Tile tile = new Tile();
                     tile.TilePositionX = i;
                     tile.TilePositionY = j;
                     tile.Type = Tile.TileType.Wall;
-                    tile.isWall = true;
                     mapTiles[i, j] = tile;
                 }
             }
             GeneratePaths();
+            GenerateStairs();
+
         }
 
-        //Minimap  
+        
+        //Minimap
+        //Minimap is TableLayoutPanel with sizeX & sizeY
+        //Minimap cells get icons from tile.Type of mapTiles
         public void GenerateMinimapUI()
         {
             minimap.AutoSize = true;
-            minimap.ColumnCount = 10;
-            minimap.RowCount = 10;
+            minimap.ColumnCount = sizeX;
+            minimap.RowCount = sizeY;
             minimap.Location = new System.Drawing.Point(25, 25);
             minimap.BackColor = Color.Black;
             minimap.CellBorderStyle = TableLayoutPanelCellBorderStyle.None;
@@ -70,17 +82,20 @@ namespace fpdungeonCrawler.Map
                 minimap.SetCellPosition(PicBox, new TableLayoutPanelCellPosition(tile.TilePositionX, tile.TilePositionY));
                 PicBox.BackgroundImageLayout = ImageLayout.Stretch;
                 PicBox.Margin = new Padding(0);
-                pictureboxes[tile.TilePositionX, tile.TilePositionY] = PicBox;
+                minimapIcons[tile.TilePositionX, tile.TilePositionY] = PicBox;
 
 
                 switch (tile.Type)
                 {
                     case Tile.TileType.Wall:
-                        if (tile.entity == null) PicBox.BackgroundImage = Properties.Resources.WallTile;
+                        PicBox.BackgroundImage = Properties.Resources.WallTile;
                         break;
 
                     case Tile.TileType.Floor:
                         PicBox.BackgroundImage = Properties.Resources.FloorTile;
+                        break;
+                    case Tile.TileType.Stairs:
+                        PicBox.BackgroundImage = Properties.Resources.Stairs;
                         break;
                     default:
                         break;
@@ -105,8 +120,8 @@ namespace fpdungeonCrawler.Map
 
             for (int j = -1; j < 5; j++)
             {
-                if (player.GetPositionInFront(player, j).Column < 0 || player.GetPositionInFront(player, j).Column >= 9
-                    || player.GetPositionInFront(player, j).Row < 0 || player.GetPositionInFront(player, j).Row >= 9)
+                if (player.GetPositionInFront(player, j).Column < 0 || player.GetPositionInFront(player, j).Column >= sizeX-1
+                    || player.GetPositionInFront(player, j).Row < 0 || player.GetPositionInFront(player, j).Row >= sizeY-1)
                 {
                     playerViewRange[j + 1] = new Tile();
                 }
@@ -118,7 +133,7 @@ namespace fpdungeonCrawler.Map
 
             for (int i = 0; i < playerViewRange.Length; i++)
             {
-                PictureBox PicBox = pictureboxes[playerViewRange[i].TilePositionX, playerViewRange[i].TilePositionY];
+                PictureBox PicBox = minimapIcons[playerViewRange[i].TilePositionX, playerViewRange[i].TilePositionY];
 
                 if (playerViewRange[i].entity == null)
                 {
@@ -151,16 +166,19 @@ namespace fpdungeonCrawler.Map
                 }
                 if (playerViewRange[i].player == player)
                 {
-                    PicBox.BackgroundImage = ChangePlayerArrowDirection(player);
+                    PicBox.BackgroundImage = ChangePlayerIconDirection(player);
                 }
             }
         }
 
+
+        //Resets PlayerViewRange on Minimap
+        //=> Minimap icons == mapTiles.tiles.Type
         public void ResetPlayerViewRange()
         {
             for (int i = 0; i < playerViewRange.Length; i++)
             {
-                PictureBox PicBox = pictureboxes[playerViewRange[i].TilePositionX, playerViewRange[i].TilePositionY];
+                PictureBox PicBox = minimapIcons[playerViewRange[i].TilePositionX, playerViewRange[i].TilePositionY];
 
                 switch (playerViewRange[i].Type)
                 {
@@ -177,7 +195,9 @@ namespace fpdungeonCrawler.Map
             }
         }
 
-        public Image ChangePlayerArrowDirection(Player player)
+
+        //Changes rotation of player icon on Minimap
+        public Image ChangePlayerIconDirection(Player player)
         {
             Image bmPlayerArrow = Properties.Resources.PlayerArrowNew;
 
@@ -202,11 +222,16 @@ namespace fpdungeonCrawler.Map
         }
 
 
-        //Procedural PathGeneration
-        public void GeneratePaths()                     //Random Path/Floor Generation Method
+
+        public void GeneratePaths()                         //Procedural PathGeneration
         {
             int currentTileX = StartPosition.X;
             int currentTileY = StartPosition.Y;
+            int distanceCounter = 0;
+            int maxDistance = 0;
+
+            Tile maxDistanceTile;
+
             List<Tile> chosenTiles = new List<Tile>();
 
             while (!FloorGenerated)
@@ -215,7 +240,13 @@ namespace fpdungeonCrawler.Map
 
                 if (mapTiles[currentTileX, currentTileY].Type != Tile.TileType.Floor)
                 {
-                    GenerateFloor(currentTileX, currentTileY);
+                    GenerateFloorTile(currentTileX, currentTileY);
+                    distanceCounter++;
+                    if (distanceCounter >= maxDistance)
+                    {
+                        maxDistance = distanceCounter;
+                        EndPosition = (currentTileX, currentTileY);
+                    }
                 }
 
                 //Check 2 Tiles above StartTile and Keep Dungeon Border as Wall
@@ -230,7 +261,7 @@ namespace fpdungeonCrawler.Map
                 }
 
                 //Check 2 Tiles beneath StartTile
-                if (currentTileY + 2 < SizeY - 1)
+                if (currentTileY + 2 < sizeY - 1)
                 {
                     Tile tile = mapTiles[currentTileX, currentTileY + 2];
 
@@ -252,9 +283,9 @@ namespace fpdungeonCrawler.Map
                     }
                 }
 
-                //Check 2 Tiles right of StartTile
+                //Check 2 Tiles right of CurrentTile
 
-                if (currentTileX + 2 < SizeX - 1)
+                if (currentTileX + 2 < sizeX - 1)
                 {
                     Tile tile = mapTiles[currentTileX + 2, currentTileY];
 
@@ -262,35 +293,45 @@ namespace fpdungeonCrawler.Map
                     {
                         validTiles.Add(tile);
                     }
+
+
                 }
+
+                int[,] distance = new int[sizeX, sizeY];
+                distance[StartPosition.X, StartPosition.Y] = 0;
+
+
+
 
                 //If no valid tile can be found, look at the last chosenTile that worked and try to find one there
                 if (validTiles.Count <= 0)
                 {
-                    if (chosenTiles.Count > 0)
-                    {
-                        chosenTiles.RemoveAt(chosenTiles.Count - 1);
-                        if (chosenTiles.Count == 0)
-                        {
-                            FloorGenerated = true;
-                            return;
-                        }
-                        currentTileX = chosenTiles[chosenTiles.Count - 1].TilePositionX;
-                        currentTileY = chosenTiles[chosenTiles.Count - 1].TilePositionY;
-                        continue;
-                    }
-                    else
+                    chosenTiles.RemoveAt(chosenTiles.Count - 1);
+                    if (chosenTiles.Count == 0)
                     {
                         FloorGenerated = true;
                         return;
                     }
+                    currentTileX = chosenTiles[chosenTiles.Count - 1].TilePositionX;
+                    currentTileY = chosenTiles[chosenTiles.Count - 1].TilePositionY;
+                    distanceCounter--;
+
+                    if (distanceCounter >= maxDistance)
+                    {
+                        maxDistance = distanceCounter;
+                        EndPosition = (currentTileX, currentTileY);
+                    }
+
+                    continue;
                 }
+
                 int i = new Random().Next(validTiles.Count);
 
                 //Choose a random tile from the valid tiles List, and add it to the chosenTiles list, then generate a Floor on this Tile
                 Tile chosenTile = validTiles[i];
                 chosenTile.isVisited = true;
                 chosenTiles.Add(chosenTile);
+
 
                 //Set Tile between StartTile and chosenTile as floor type
                 Tile tileBetween = new();
@@ -319,7 +360,8 @@ namespace fpdungeonCrawler.Map
                     tileBetween.TilePositionY = chosenTile.TilePositionY - 1;
                 }
 
-                GenerateFloor(tileBetween.TilePositionX, tileBetween.TilePositionY);
+                GenerateFloorTile(tileBetween.TilePositionX, tileBetween.TilePositionY);
+                distanceCounter++;
 
                 //Set chosenTile as currentTile so that it will be generated as Floor in next loop
                 currentTileX = chosenTiles[chosenTiles.Count - 1].TilePositionX;
@@ -328,18 +370,25 @@ namespace fpdungeonCrawler.Map
         }
 
         //Create a Tile of floor type
-        public void GenerateFloor(int col, int row)
+        public void GenerateFloorTile(int col, int row)
         {
             Tile tile = new Tile();
             tile.TilePositionX = col;
             tile.TilePositionY = row;
             tile.Type = Tile.TileType.Floor;
-            tile.isWall = false;
             tile.isVisited = true;
             mapTiles[col, row] = tile;
         }
 
-
+        //Create Stairs to next Dungeon Level
+        private void GenerateStairs()
+        {
+            Tile stairs = new();
+            stairs.TilePositionX = EndPosition.X;
+            stairs.TilePositionY = EndPosition.Y;
+            stairs.Type = Tile.TileType.Stairs;
+            mapTiles[EndPosition.X, EndPosition.Y] = stairs;
+        }
         //Get Area of the Map by entering Position & Range
         public List<Tile> CheckMapArea(int PositionX, int PositionY, int width, int height)
         {
@@ -349,7 +398,7 @@ namespace fpdungeonCrawler.Map
             {
                 for (int j = PositionX; j < PositionX + width; j++)
                 {
-                    if (i < 0 || j < 0 || i > SizeX - 1 || j > SizeY - 1)
+                    if (i < 0 || j < 0 || i > sizeX - 1 || j > sizeY - 1)
                     {
                         Debug.WriteLine("ERROR - Invalid Map Area Check");
                     }
@@ -395,7 +444,6 @@ namespace fpdungeonCrawler.Map
 
 
         //Spawn Enemies
-
         public void SpawnEnemies()
         {
             List<Tile> floortiles = GetFloorTiles();
@@ -409,13 +457,13 @@ namespace fpdungeonCrawler.Map
 
             while (!enemySpawnFinished)
             {
-                
+
                 foreach (Tile t in invalidTiles)
                 {
                     t.invalidFloorPosition = true;
                 }
 
-                if(invalidTiles.Count >= floortiles.Count)
+                if (invalidTiles.Count >= floortiles.Count)
                 {
                     enemySpawnFinished = true;
                     break;
@@ -431,21 +479,21 @@ namespace fpdungeonCrawler.Map
 
                     //Add Tiles around Enemy to InvalidTiles List
                     List<Tile> newInvalidTiles = CheckMapArea(randomTile.TilePositionX - 1, randomTile.TilePositionY - 1, 3, 3);
-                    
-                    foreach(Tile t in newInvalidTiles)
+
+                    foreach (Tile t in newInvalidTiles)
                     {
                         if (!invalidTiles.Contains(t))
                         {
                             invalidTiles.Add(t);
                         }
-                    }                    
+                    }
                 }
             }
         }
 
         public bool CheckIfInBounds(int Column, int Row)
         {
-            if (Column > SizeX -1 || Column < 0 || Row > SizeY -1 || Row < 0)
+            if (Column > sizeX - 1 || Column < 0 || Row > sizeY - 1 || Row < 0)
             {
                 return false;
             }
@@ -454,5 +502,95 @@ namespace fpdungeonCrawler.Map
                 return true;
             }
         }
+
+
+        // Kevins Code
+        //public Tile GetStairwayTile()
+        //{
+        //    int[,] distance = new int[SizeX, SizeY];
+        //    for (int i = 0; i < SizeX; i++)
+        //        for (int j = 0; j < SizeY; j++)
+        //        {
+        //            distance[i, j] = -1;
+        //        }
+
+        //    distance[StartPosition.X, StartPosition.Y] = 0;
+
+        //    bool write = true;
+        //    int number = 0;
+        //    while (write)
+        //    {
+        //        write = false;
+        //        for (int i = 0; i < SizeX; i++)
+        //            for (int j = 0; j < SizeY; j++)
+        //            {
+        //                if (distance[i, j] == number)
+        //                {
+        //                    int neighbourX = i;
+        //                    int neighbourY = j - 1;
+
+        //                    if (CheckIfInBounds(neighbourX, neighbourY)
+        //&& mapTiles[neighbourX, neighbourY].Type == Tile.TileType.Floor
+        //&& distance[neighbourX, neighbourY] == -1)
+        //                    {
+        //                        distance[neighbourX, neighbourY] = number + 1;
+        //                        write = true;
+        //                    }
+
+        //                    neighbourX = i;
+        //                    neighbourY = j + 1;
+
+        //                    if (CheckIfInBounds(neighbourX, neighbourY)
+        //&& mapTiles[neighbourX, neighbourY].Type == Tile.TileType.Floor
+        //&& distance[neighbourX, neighbourY] == -1)
+        //                    {
+        //                        distance[neighbourX, neighbourY] = number + 1;
+        //                        write = true;
+        //                    }
+
+        //                    neighbourX = i + 1;
+        //                    neighbourY = j;
+
+        //                    if (CheckIfInBounds(neighbourX, neighbourY)
+        //&& mapTiles[neighbourX, neighbourY].Type == Tile.TileType.Floor
+        //&& distance[neighbourX, neighbourY] == -1)
+        //                    {
+        //                        distance[neighbourX, neighbourY] = number + 1;
+        //                        write = true;
+        //                    }
+
+        //                    neighbourX = i - 1;
+        //                    neighbourY = j;
+
+        //                    if (CheckIfInBounds(neighbourX, neighbourY)
+        //&& mapTiles[neighbourX, neighbourY].Type == Tile.TileType.Floor
+        //&& distance[neighbourX, neighbourY] == -1)
+        //                    {
+        //                        distance[neighbourX, neighbourY] = number + 1;
+        //                        write = true;
+        //                    }
+
+        //                }
+        //            }
+        //        number++;
+        //    }
+
+        //    int furthestX = StartPosition.X;
+        //    int furthestY = StartPosition.Y;
+        //    int biggestnumber = 0;
+
+        //    for (int i = 0; i < SizeX; i++)
+        //        for (int j = 0; j < SizeY; j++)
+        //        {
+        //            if (distance[i, j] > biggestnumber)
+        //            {
+        //                biggestnumber = distance[i, j];
+        //                furthestX = i;
+        //                furthestY = j;
+        //            }
+        //        }
+        //    return mapTiles[furthestX, furthestY];
+        //////}             
+
     }
 }

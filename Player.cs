@@ -15,7 +15,8 @@ namespace fpdungeonCrawler
 
         public Tile[] View = new Tile[9];
 
-        public bool StateHit;
+        public enum State { Hit, Idle, Consume, Casting}
+        public State state;
 
       
         public Player GeneratePlayer(fpdungeonCrawler.Map.Map map)

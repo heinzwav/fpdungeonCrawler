@@ -21,6 +21,8 @@ namespace fpdungeonCrawler
             currentFrame = 0;
         }
 
+
+
         public void Update()
         {
             if (!loop)
@@ -53,6 +55,7 @@ namespace fpdungeonCrawler
 
         }
 
+        
         public void Loop()
         {
             if (!isActive)
@@ -74,6 +77,7 @@ namespace fpdungeonCrawler
                 currentTick = 0;
             }
         }
+
 
         public Image GetCurrentFrameSprite(int currentframe)
         {

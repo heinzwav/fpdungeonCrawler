@@ -75,7 +75,7 @@ namespace fpdungeonCrawler
 
             this.KeyDown += Playermovements;
 
-            dungeonView.DrawEnvironment(player, map);
+            dungeonView.CheckViewportLayers(player, map);
 
 
             this.Invalidate();
@@ -95,7 +95,7 @@ namespace fpdungeonCrawler
             }
 
             uiManager.playerhud.Draw(player, e.Graphics, DungeonView.layerPlayer);
-            combatRunTime.CombatTickIndicator(e, hud.LayerCombatTick);
+            combatRunTime.CombatTickIndicator(e, hud.LayerCombatTicker);
         }
 
         public void UpdatePlayerposition()
@@ -167,14 +167,14 @@ namespace fpdungeonCrawler
 
             if (e.KeyCode == Keys.Space)
             {
-                player.StateHit = true;
+                player.state = Player.State.Hit;
             }
 
 
             UpdatePlayerposition();
             map.UpdateEntityLocation(player);
             map.UpdateMinimapUI(player);
-            dungeonView.DrawEnvironment(player, map);
+            dungeonView.CheckViewportLayers(player, map);
             this.Invalidate();
         }
 

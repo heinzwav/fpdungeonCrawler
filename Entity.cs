@@ -33,8 +33,6 @@ namespace fpdungeonCrawler
         public Animation deathAnimation { get; set; }
         public Animation activeAnimation { get; set; }
 
-
-
         public Image mapIcon { get; set; }
 
 
@@ -50,7 +48,7 @@ namespace fpdungeonCrawler
                 actor.attackAnimation.StartAnimation();
 
                 audiomanager.PlayAudio(Properties.Resources.weaponWhoosh);
-                
+
 
                 if (entity.healthpoints <= 0)
                 {
@@ -62,10 +60,6 @@ namespace fpdungeonCrawler
             }
         }
 
-        public void TakeDamage(int damage)
-        {
-            healthpoints -= damage;
-        }
 
 
         public (int Column, int Row) GetPositionInFront(Entity entity, int distance)
@@ -91,6 +85,7 @@ namespace fpdungeonCrawler
             return entity.PositionInFront;
         }
 
+
         public (int Column, int Row) GetPositionBehind(Entity entity)
         {
             switch (entity.orientation)
@@ -114,7 +109,7 @@ namespace fpdungeonCrawler
             return entity.PositionBehind;
         }
 
-    
+
     }
 
 }

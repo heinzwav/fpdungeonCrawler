@@ -26,6 +26,7 @@ namespace fpdungeonCrawler.UI
             Alignment = StringAlignment.Center,
             LineAlignment = StringAlignment.Center
         };
+
         public void Draw(Player player, Graphics g, Layer layer)
         {
             barWidth = (int)Math.Round(layer.rec.Width * player.healthpoints * scaleFactorX);

@@ -8,6 +8,7 @@ namespace fpdungeonCrawler
 {
     public  class CombatRunTime
     {
+        DamageAnimation dmgAnimation = new();
         int currentTick = 0;
         public int CoolDowninMilliseconds = 2000;
         public int Interval = 45; //Wie viele Frames
@@ -22,13 +23,13 @@ namespace fpdungeonCrawler
             {
                 //PlayerHit
 
-                if (form1.player.StateHit)
+                if (form1.player.state == Player.State.Hit)
                 {
                     form1.player.DoDamage(form1.player, form1.map, form1.audiomanager);
                 }
                 EnemyAttackCheck(form1);
                 currentTick = 0;
-                form1.player.StateHit = false;
+                form1.player.state = Player.State.Hit;
             }
             else
             {
@@ -54,6 +55,7 @@ namespace fpdungeonCrawler
                 {
                     entity.activeAnimation = entity.attackAnimation;
                     entity.activeAnimation.StartAnimation();
+                    dmgAnimation.StartAnimation();
                     form1.player.healthpoints -= entity.baseDamage;
                 }
             }
