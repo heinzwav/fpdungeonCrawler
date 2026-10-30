@@ -35,6 +35,9 @@ namespace fpdungeonCrawler
 
         public Image mapIcon { get; set; }
 
+        public enum State { Hit, Idle, Consume, Casting }
+        public State state = State.Idle;
+
 
         public void DoDamage(Entity actor, fpdungeonCrawler.Map.Map map, Audiomanager audiomanager)
         {
@@ -52,6 +55,7 @@ namespace fpdungeonCrawler
 
                 if (entity.healthpoints <= 0)
                 {
+                    actor.state = State.Idle;
                     entity.activeAnimation.isActive = false;
                     entity.activeAnimation = entity.deathAnimation;
                     entity.activeAnimation.StartAnimation();

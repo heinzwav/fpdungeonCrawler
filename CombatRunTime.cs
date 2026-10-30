@@ -10,7 +10,7 @@ namespace fpdungeonCrawler
     {
         DamageAnimation dmgAnimation = new();
         int currentTick = 0;
-        public int CoolDowninMilliseconds = 2000;
+        public int CoolDowninMilliseconds = 1000;
         public int Interval = 45; //Wie viele Frames
         int maxRadius = 360;
         
@@ -23,13 +23,13 @@ namespace fpdungeonCrawler
             {
                 //PlayerHit
 
-                if (form1.player.state == Player.State.Hit)
+                if (form1.player.state == Entity.State.Hit)
                 {
                     form1.player.DoDamage(form1.player, form1.map, form1.audiomanager);
                 }
                 EnemyAttackCheck(form1);
                 currentTick = 0;
-                form1.player.state = Player.State.Hit;
+                form1.player.state = Entity.State.Idle;
             }
             else
             {

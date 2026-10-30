@@ -31,29 +31,34 @@ namespace fpdungeonCrawler
         public Size layerEntitySize = new Size(430, 440);
         public Point layerEntityLocation = new Point(190, 150);
 
-        //Player Layer
+        //Player Animation Layer
         public static Layer layerPlayer = new();
         public Size layerPlayerSize = new Size(800, 700);
         public Point layerPlayerLocation = new Point(0, 80);
+
+        //Environment Layer
+        public static Layer layerEnvironment = new();
+        public Size layerEnvironmentSize = new Size(820, 690);
+        public Point layerEnvironmentLocation = new Point(0, 0);
 
 
         private Dictionary<(int layer, int pattern), Image> layerImages = new()
         {
             { (1, 000), Properties.Resources.Layer1_T },
-            { (1, 100), Properties.Resources.Layer1_L },
-            { (1, 001), Properties.Resources.Layer1_R },
-            { (1, 101), Properties.Resources.Layer1_Straight },
+            { (1, 001), Properties.Resources.Layer1_L },
+            { (1, 100), Properties.Resources.Layer1_R },
+            { (1, 101), Properties.Resources.Layer1_StraightWithWall },
             { (1, 111), Properties.Resources.Layer1_Wall },
 
             { (2, 000), Properties.Resources.Layer2_T },
-            { (2, 100), Properties.Resources.Layer2_L },
-            { (2, 001), Properties.Resources.Layer2_R },
+            { (2, 001), Properties.Resources.Layer2_L },
+            { (2, 100), Properties.Resources.Layer2_R },
             { (2, 101), Properties.Resources.Layer2_Straight },
             { (2, 111), Properties.Resources.Layer2_Wall },
 
             { (3, 000), Properties.Resources.Layer3_T },
-            { (3, 100), Properties.Resources.Layer3_L },
-            { (3, 001), Properties.Resources.Layer3_R },
+            { (3, 001), Properties.Resources.Layer3_L },
+            { (3, 100), Properties.Resources.Layer3_R },
             { (3, 101), Properties.Resources.Layer3_Straight },
             { (3, 111), Properties.Resources.Layer3_Wall },
         };
@@ -72,6 +77,7 @@ namespace fpdungeonCrawler
             layer3 = layer3.InitializeLayer(layer3Size, layer3Location, Properties.Resources.Layer3_Straight);
             layerEntity = layerEntity.InitializeLayer(layerEntitySize, layerEntityLocation, Properties.Resources.Ork_Idle);
             layerPlayer = layerPlayer.InitializeLayer(layerPlayerSize, layerPlayerLocation, Properties.Resources.sword1_idle);
+            layerEnvironment.img = Properties.Resources.Stairs;
         }
 
         //Animations
@@ -105,6 +111,10 @@ namespace fpdungeonCrawler
             else if (leftWall && !frontWall && rightWall)
             {
                 layer1.img = layerImages[(1, 101)];
+                if (map.playerSight[0].Type != Tile.TileType.Wall)
+                {
+                    layer1.img = Properties.Resources.Layer1_Straight;
+                }
             }
             else if (!leftWall && !frontWall && rightWall)
             {
@@ -114,10 +124,11 @@ namespace fpdungeonCrawler
             {
                 layer1.img = layerImages[(1, 000)];
             }
-            else if(leftWall && frontWall && !rightWall)
+            else if(leftWall && !frontWall && !rightWall)
             {
-                layer1.img = layerImages[(1, 110)];
+                layer1.img = layerImages[(1, 100)];
             }
+
         }
 
         private void CheckLayer2(Player player, fpdungeonCrawler.Map.Map map)
@@ -195,6 +206,7 @@ namespace fpdungeonCrawler
             CheckLayer1(player, map);
             CheckLayer2(player, map);
             CheckLayer3(player, map);
+            UpdateEnvironmentLayer(player, map);
         }
 
         public void GetPlayerView(Player player, fpdungeonCrawler.Map.Map map)
@@ -318,6 +330,11 @@ namespace fpdungeonCrawler
             layerPlayer.img = player.attackAnimation.GetCurrentFrameSprite(player.attackAnimation.currentFrame);
             e.Graphics.DrawImage(layerPlayer.img, layerPlayer.rec);
             dmgAnimation.DoDamageAnimation(e.Graphics);
+
+            if (layerEnvironment.isVisible)
+            {
+                e.Graphics.DrawImage(layerEnvironment.img, layerEnvironment.rec);
+            }
         }
 
 
@@ -340,6 +357,8 @@ namespace fpdungeonCrawler
                     break;
             }
         }
+
+
 
         public Entity GetAnyEnemyInFront(fpdungeonCrawler.Map.Map map, Player player)
         {
@@ -380,5 +399,57 @@ namespace fpdungeonCrawler
                 return entity;
             }
         }
+
+
+        //Befindet sich aktuell im Bau und bezieht sich aktuell nur auf Stairs -- Außerdem Codewiederholung -- entweder von GetEnemyInFront() oder von GetPlayerSight()
+        public void UpdateEnvironmentLayer(Player player, Map.Map map)
+        {
+            int viewDistance = 3;
+            int Distance = 0;
+            map.GetPlayerSight(player);
+
+            for (int i = viewDistance; i >= 1; i--)
+            {
+                int X = player.GetPositionInFront(player, i).Column;
+                int Y = player.GetPositionInFront(player, i).Row;
+
+                if (map.CheckIfInBounds(X, Y))
+                {
+                    Tile tile = map.mapTiles[X, Y];
+                    if (tile.Type == Tile.TileType.Stairs)
+                    {
+                        Distance = i;
+                        layerEnvironment.isVisible = true;
+                        SetRecEnvironmentSize(i);
+                        layerEnvironment.img = Properties.Resources.Stairs;
+                    }
+                    if (tile.Type == Tile.TileType.Wall)
+                    {
+                        Distance = 0;
+                        layerEnvironment.isVisible = false;
+                    }
+                }
+            }            
+        }
+
+        public void SetRecEnvironmentSize(int distance)
+        {
+            switch (distance)
+            {
+                case 3:
+                    layerEnvironment.rec.Size = new Size(120, 114);
+                    layerEnvironment.rec.Location = new Point(335, 400);
+                    break;
+                case 2:
+                    layerEnvironment.rec.Size = layer1.rec.Size;
+                    layerEnvironment.rec.Location = new(layer1.rec.Location.X, layer1.rec.Location.Y + 50);
+                    break;
+                case 1:
+                    layerEnvironment.rec.Size = layer2.rec.Size;
+                    layerEnvironment.rec.Location = layer2.rec.Location;
+                    break;
+            }
+        }
+
     }
 }

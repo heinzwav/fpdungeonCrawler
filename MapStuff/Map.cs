@@ -15,8 +15,8 @@ namespace fpdungeonCrawler.Map
 {
     public class Map
     {
-        public int sizeX = 15;
-        public int sizeY = 15;
+        public int sizeX = 9;
+        public int sizeY = 9;
 
         public Tile[,] mapTiles;
         public PictureBox[,] minimapIcons;
@@ -26,10 +26,11 @@ namespace fpdungeonCrawler.Map
         private (int X, int Y) EndPosition;
         private bool FloorGenerated;
 
-        Tile[] playerViewRange = new Tile[6];       //Player can view the tile behind and the 4 tiles in front
+        int playerViewRange = 6;
+        public Tile[] playerSight = new Tile[6];       //Player can view the tile behind and the 4 tiles in front
+
         private bool FirstStartUp = true;
 
-        TableLayoutPanelCellPosition[] PlayerViewTiles = new TableLayoutPanelCellPosition[9];
 
         public Map()
         {
@@ -103,11 +104,29 @@ namespace fpdungeonCrawler.Map
             }
         }
 
+
+        public void GetPlayerSight(Player player)
+        {
+            for (int j = -1; j < playerViewRange -1; j++)
+            {
+                if (player.GetPositionInFront(player, j).Column < 0 || player.GetPositionInFront(player, j).Column >= sizeX - 1
+                    || player.GetPositionInFront(player, j).Row < 0 || player.GetPositionInFront(player, j).Row >= sizeY - 1)
+                {
+                    playerSight[j + 1] = new Tile();
+                }
+                else
+                {
+                    playerSight[j + 1] = mapTiles[player.GetPositionInFront(player, j).Column, player.GetPositionInFront(player, j).Row];
+                }
+            }
+        }
+
+
         public void UpdateMinimapUI(Player player)
         {
             if (!FirstStartUp)
             {
-                ResetPlayerViewRange();
+                ResetPlayerSightMinimap();
             }
             FirstStartUp = false;
 
@@ -115,29 +134,16 @@ namespace fpdungeonCrawler.Map
             player.PositionBehind = player.GetPositionBehind(player);
 
             Tile tile;
-            playerViewRange = new Tile[6];
+            GetPlayerSight(player);
 
 
-            for (int j = -1; j < 5; j++)
+            for (int i = 0; i < playerSight.Length; i++)
             {
-                if (player.GetPositionInFront(player, j).Column < 0 || player.GetPositionInFront(player, j).Column >= sizeX-1
-                    || player.GetPositionInFront(player, j).Row < 0 || player.GetPositionInFront(player, j).Row >= sizeY-1)
-                {
-                    playerViewRange[j + 1] = new Tile();
-                }
-                else
-                {
-                    playerViewRange[j + 1] = mapTiles[player.GetPositionInFront(player, j).Column, player.GetPositionInFront(player, j).Row];
-                }
-            }
+                PictureBox PicBox = minimapIcons[playerSight[i].TilePositionX, playerSight[i].TilePositionY];
 
-            for (int i = 0; i < playerViewRange.Length; i++)
-            {
-                PictureBox PicBox = minimapIcons[playerViewRange[i].TilePositionX, playerViewRange[i].TilePositionY];
-
-                if (playerViewRange[i].entity == null)
+                if (playerSight[i].entity == null)
                 {
-                    switch (playerViewRange[i].Type)
+                    switch (playerSight[i].Type)
                     {
                         case Tile.TileType.Wall:
                             PicBox.BackgroundImage = Properties.Resources.WallTile;
@@ -152,11 +158,11 @@ namespace fpdungeonCrawler.Map
                 }
                 else
                 {
-                    if (playerViewRange[i].entity.isEnemy)
+                    if (playerSight[i].entity.isEnemy)
                     {
                         if (i < 5)
                         {
-                            PicBox.BackgroundImage = playerViewRange[i].entity.mapIcon;
+                            PicBox.BackgroundImage = playerSight[i].entity.mapIcon;
                         }
                         else
                         {
@@ -164,7 +170,7 @@ namespace fpdungeonCrawler.Map
                         }
                     }
                 }
-                if (playerViewRange[i].player == player)
+                if (playerSight[i].player == player)
                 {
                     PicBox.BackgroundImage = ChangePlayerIconDirection(player);
                 }
@@ -174,13 +180,13 @@ namespace fpdungeonCrawler.Map
 
         //Resets PlayerViewRange on Minimap
         //=> Minimap icons == mapTiles.tiles.Type
-        public void ResetPlayerViewRange()
+        public void ResetPlayerSightMinimap()
         {
-            for (int i = 0; i < playerViewRange.Length; i++)
+            for (int i = 0; i < playerSight.Length; i++)
             {
-                PictureBox PicBox = minimapIcons[playerViewRange[i].TilePositionX, playerViewRange[i].TilePositionY];
+                PictureBox PicBox = minimapIcons[playerSight[i].TilePositionX, playerSight[i].TilePositionY];
 
-                switch (playerViewRange[i].Type)
+                switch (playerSight[i].Type)
                 {
                     case Tile.TileType.Wall:
                         PicBox.BackgroundImage = Properties.Resources.WallTile;
@@ -188,6 +194,10 @@ namespace fpdungeonCrawler.Map
 
                     case Tile.TileType.Floor:
                         PicBox.BackgroundImage = Properties.Resources.FloorTile;
+                        break;
+                    
+                    case Tile.TileType.Stairs:
+                        PicBox.BackgroundImage = Properties.Resources.Stairs;
                         break;
                     default:
                         break;

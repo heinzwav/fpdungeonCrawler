@@ -7,7 +7,7 @@ using System.Media;
 using System.Resources;
 using System.Security.Cryptography.X509Certificates;
 using System.Timers;
-using fpdungeonCrawler.Map;
+
 
 namespace fpdungeonCrawler
 {
@@ -59,10 +59,6 @@ namespace fpdungeonCrawler
             dungeonView.Initialize();
 
             map.SpawnEnemies();
-            //EntityGeneration
-            ////////////entities.Add(succubus = EnemyDatabase.CreateSuccubus(map));
-            ////////////entities.Add(orc = EnemyDatabase.CreateOrc(map));
-
 
             dungeonView.GetPlayerView(player, map);
 
@@ -123,6 +119,11 @@ namespace fpdungeonCrawler
                 }
                 if (map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity is not null && map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].entity!.healthpoints > 0)
                 {
+                    return;
+                }
+                if(map.mapTiles[player.PositionInFront.Column, player.PositionInFront.Row].Type == Tile.TileType.Stairs)
+                {
+                    GoToNextLevel();
                     return;
                 }
                 player.CurrentPosition = (player.PositionInFront);
@@ -193,6 +194,31 @@ namespace fpdungeonCrawler
             Invalidate();
         }
 
+
+        public void GoToNextLevel()
+        {
+            gameTimer.Stop();
+            gameTimer.Enabled = false;
+
+            //Map Generation
+            Map.Map newmap = new();
+            map = newmap;
+            map.GenerateMap();
+            player.CurrentPosition = (1, 1);
+            map.GenerateMinimapUI();
+            map.minimap.Update();
+
+            this.Controls.Add(map.minimap);
+            this.Controls.SetChildIndex(map.minimap, 0);
+            map.UpdateMinimapUI(player);
+
+            map.SpawnEnemies();
+
+            dungeonView.GetPlayerView(player, map);
+
+            gameTimer.Start();
+            gameTimer.Enabled = true;
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
 

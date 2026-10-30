@@ -112,6 +112,16 @@ namespace fpdungeonCrawler.Properties {
         /// <summary>
         ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Layer1_StraightWithWall {
+            get {
+                object obj = ResourceManager.GetObject("Layer1_StraightWithWall", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Layer1_T {
             get {
                 object obj = ResourceManager.GetObject("Layer1_T", resourceCulture);
