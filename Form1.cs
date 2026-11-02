@@ -1,3 +1,5 @@
+using DungeonCrawlerMitHandy.Core;
+
 namespace DungeonCrawlerMitHandy
 {
     public partial class Form1 : Form
@@ -9,7 +11,6 @@ namespace DungeonCrawlerMitHandy
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
     }
 }
