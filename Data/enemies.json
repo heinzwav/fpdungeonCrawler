@@ -1,0 +1,16 @@
+[
+  {
+    "Type": "Orc",
+    "Name": "Fembube",
+    "MinHealth": 150,
+    "MaxHealth": 175,
+    "AttackDamage": 2
+  },
+  {
+    "Type": "Succubus",
+    "Name": "Heinz",
+    "MinHealth": 225,
+    "MaxHealth": 275,
+    "AttackDamage": 5
+  }
+]

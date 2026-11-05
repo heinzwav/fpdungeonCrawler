@@ -46,6 +46,8 @@ namespace DungeonCrawlerMitHandy.World
         public GridPos? GetPositionOfEntity(Entity entity)
             => PositionByEntity.TryGetValue(entity, out GridPos pos) ? pos : null;
 
+
+
         public bool TryMove(Entity entity, Direction direction)
         {
             if (GetPositionOfEntity(entity) is not GridPos currentPosition)
@@ -64,6 +66,30 @@ namespace DungeonCrawlerMitHandy.World
             PositionByEntity.Add(entity, targetPosition);
 
             return true;
+        }
+
+        public void RemoveEntity(Entity entity)
+        {
+            if (!PositionByEntity.TryGetValue(entity, out GridPos pos)) return;
+            EntityByPosition.Remove(pos);
+            PositionByEntity.Remove(entity);
+        }
+
+        public Entity? GetFirstEntityInDirection(GridPos from, Direction direction, int maxDistance)
+        {
+            for (int distance = 1; distance <= maxDistance; distance++)
+            {
+                GridPos targetTile = from + direction.ToStep() * distance;
+
+                // Wenn dort eine Wand ist, braucht man gar nicht mehr weitersuchen
+                Tile? tile = GetTile(targetTile);
+                if (tile == null || tile.Type == TileType.Wall) return null;
+
+                Entity? entity = GetEntityAtTile(targetTile);
+                if (entity != null) return entity;
+            }
+
+            return null;
         }
     }
 

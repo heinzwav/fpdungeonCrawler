@@ -32,8 +32,9 @@ namespace DungeonCrawlerMitHandy.World
 
             // StartTile festlegen und in den Stack pushen
             Stack<GridPos> stack = new Stack<GridPos>();
-            maze[1, 1].Type = TileType.Floor;
-            stack.Push(new GridPos(1, 1));
+            GridPos start = new(1, 1);
+            maze[start.X, start.Y].Type = TileType.Floor;
+            stack.Push(start);
 
             Random random = new Random(seed);
 
@@ -68,49 +69,34 @@ namespace DungeonCrawlerMitHandy.World
                     stack.Push(targetTile);
                 }
             }
+            
+            GridPos stairs = GetStairway(maze, start);
+            maze[stairs.X, stairs.Y].Type = TileType.Stairs;
 
-            return new GeneratedMap(maze, new GridPos(1, 1), new GridPos(1, 1));
+            return new GeneratedMap(maze, start, stairs);
         }
 
         private bool IsInsideBorder(GridPos pos, int width, int height)        
             => pos.X >= 1 && pos.X < width -1 && pos.Y >= 1 && pos.Y < height -1;
-        
-        private GridPos GetStairway(Tile[,] finishedWorld, GridPos start)
+
+        private GridPos GetStairway(Tile[,] maze, GridPos start)
         {
-            int[,] array = new int[finishedWorld.GetLength(0), finishedWorld.GetLength(1)];
+            int[,] distances = DistanceMap.Calculate(maze, start);
 
-            for (int x = 0; x < array.GetLength(0); x++)
-                for (int y = 0; y < array.GetLength(1); y++)
+            GridPos farthest = start;
+            int maxDistance = 0;
+
+            for (int x = 0; x < distances.GetLength(0); x++)
+                for (int y = 0; y < distances.GetLength(1); y++)
                 {
-                    array[x, y] = -1;
-                }            
-            array[start.X, start.Y] = 0;
-            int currentNumber = 0;
-            bool found = true;
-
-            while(found)
-            {
-                found = false;
-
-                for (int x = 0; x < array.GetLength(0); x++)
-                    for (int y = 0; y < array.GetLength(1); y++)
+                    if (distances[x, y] > maxDistance)
                     {
-                        GridPos currentTile = new(x, y);
-                        foreach (Direction direction in Enum.GetValues<Direction>())
-                        {
-                            // Das Tile berechnen, welches Punkte in die Richtung geht
-                            GridPos targetTile = currentTile 
-
-                            // Prüfen ob das Tile eine Wand ist (also bereits gesetzt), oder ob es noch in Bounds ist
-                            if (IsInsideBorder(targetTile, width, height)
-                                && maze[targetTile.X, targetTile.Y].Type == TileType.Wall)
-                            {
-                                validDirections.Add(direction);
-                            }
-                        }
+                        maxDistance = distances[x, y];
+                        farthest = new GridPos(x, y);
                     }
-            }
-            
+                }
+
+            return farthest;
         }
 
     }

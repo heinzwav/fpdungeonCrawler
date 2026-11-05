@@ -5,25 +5,23 @@ using System.Text;
 
 namespace DungeonCrawlerMitHandy.Entities
 {
-    public class Entity
+    public abstract class Entity
     {
         public string Name { get; }
         public int MaxHealth { get; }
         public int CurrentHealth { get; private set; }
         public int AttackDamage { get; private set; }
-        public bool IsEnemy { get; }
         public Direction Facing { get; private set; }
         public GridPos StartPosition { get; }
         public bool IsDead => CurrentHealth == 0;
 
-        public Entity(string name, int maxHealth, int attackDamage, bool isEnemy, 
+        public Entity(string name, int maxHealth, int attackDamage, 
             Direction facing, GridPos startPosition)
         {
             Name = name;
             MaxHealth = maxHealth;
             CurrentHealth = MaxHealth;
             AttackDamage = attackDamage;
-            IsEnemy = isEnemy;
             Facing = facing;
             StartPosition = startPosition;
         }

@@ -5,7 +5,5 @@ using System.Text;
 
 namespace DungeonCrawlerMitHandy.World
 {
-    public readonly record struct GeneratedMap(Tile[,] Tiles, GridPos Start, GridPos Stairs)
-    {
-    }
+    public readonly record struct GeneratedMap(Tile[,] Tiles, GridPos Start, GridPos Stairs);
 }

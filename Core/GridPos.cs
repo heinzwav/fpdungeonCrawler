@@ -15,5 +15,9 @@ namespace DungeonCrawlerMitHandy.Core
         {
             return new GridPos(a.X * multiplicator, a.Y * multiplicator);
         }
+
+        public int DistanceTo(GridPos other)
+        => Math.Abs(X - other.X) + Math.Abs(Y - other.Y);
+
     }
 }
